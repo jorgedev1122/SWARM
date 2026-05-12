@@ -1,0 +1,628 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BODY
+========================= */
+
+body {
+
+  overflow: hidden;
+
+  background: #0f0f0f;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+canvas {
+
+  display: block;
+
+  width: 100vw;
+  height: 100vh;
+
+  background:
+    radial-gradient(circle at center, #1c1c1c 0%, #111 100%);
+
+  cursor: crosshair;
+
+}
+
+/* =========================
+   MENU OVERLAY
+========================= */
+
+#menu,
+#game-over {
+
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  background:
+    rgba(0,0,0,0.7);
+
+  backdrop-filter: blur(12px);
+
+  z-index: 999;
+
+  animation:
+    fadeIn 0.5s ease;
+
+}
+
+/* =========================
+   BOXES
+========================= */
+
+.menu-box,
+.game-over-box {
+
+  width: 540px;
+
+  padding: 45px;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,25,25,0.95),
+      rgba(15,15,15,0.98)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.5),
+    0 0 100px rgba(255,255,255,0.03);
+
+  text-align: center;
+
+  color: white;
+
+  animation:
+    popUp 0.45s ease;
+
+}
+
+/* =========================
+   TITULOS
+========================= */
+
+.menu-box h1,
+.game-over-box h2 {
+
+  font-size: 90px;
+
+  margin-bottom: 10px;
+
+  letter-spacing: 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #888
+    );
+
+  --webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 0 25px rgba(255,255,255,0.15);
+
+}
+
+/* =========================
+   SUBTEXTOS
+========================= */
+
+.subtitle,
+.game-over-box p {
+
+  font-size: 18px;
+
+  opacity: 0.72;
+
+  line-height: 1.8;
+
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+#play-btn,
+#restart-btn {
+
+  width: 100%;
+
+  margin-top: 35px;
+
+  padding: 18px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #d8d8d8
+    );
+
+  color: black;
+
+  font-size: 20px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+#play-btn:hover,
+#restart-btn:hover {
+
+  transform:
+    translateY(-3px)
+    scale(1.02);
+
+  box-shadow:
+    0 10px 30px rgba(255,255,255,0.15);
+
+}
+
+#play-btn:active,
+#restart-btn:active {
+
+  transform: scale(0.98);
+
+}
+
+/* =========================
+   INFO
+========================= */
+
+.menu-info,
+.controls,
+.record {
+
+  margin-top: 25px;
+
+  opacity: 0.65;
+
+  line-height: 1.8;
+
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.menu-info a {
+
+  color: white;
+
+  text-decoration: none;
+
+  position: relative;
+
+}
+
+.menu-info a::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -3px;
+
+  width: 0%;
+  height: 1px;
+
+  background: white;
+
+  transition: 0.25s ease;
+
+}
+
+.menu-info a:hover::after {
+
+  width: 100%;
+
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes popUp {
+
+  0% {
+
+    opacity: 0;
+
+    transform:
+      scale(0.8)
+      translateY(30px);
+
+  }
+
+  100% {
+
+    opacity: 1;
+
+    transform:
+      scale(1)
+      translateY(0);
+
+  }
+
+}
+
+/* =========================
+   MENU BOX
+========================= */
+
+.menu-box {
+
+  width: 520px;
+
+  padding: 45px;
+
+  border-radius: 24px;
+
+  background:
+    rgba(20, 20, 20, 0.92);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.6);
+
+  text-align: center;
+
+  color: white;
+
+}
+
+/* =========================
+   TITULO
+========================= */
+
+.menu-box h1 {
+
+  font-size: 82px;
+
+  letter-spacing: 6px;
+
+  margin-bottom: 10px;
+
+  color: white;
+
+}
+
+/* =========================
+   SUBTITULO
+========================= */
+
+.subtitle {
+
+  font-size: 18px;
+
+  opacity: 0.7;
+
+  margin-bottom: 40px;
+
+  line-height: 1.6;
+
+}
+
+/* =========================
+   BOTÃO
+========================= */
+
+#play-btn {
+
+  width: 100%;
+
+  padding: 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: white;
+
+  color: black;
+
+  font-size: 20px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+#play-btn:hover {
+
+  transform: scale(1.03);
+
+  opacity: 0.9;
+
+}
+
+#play-btn:active {
+
+  transform: scale(0.98);
+
+}
+
+/* =========================
+   INFO MENU
+========================= */
+
+.menu-info {
+
+  margin-top: 35px;
+
+  opacity: 0.75;
+
+  line-height: 1.8;
+
+}
+
+.menu-info p {
+
+  margin-bottom: 8px;
+
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.menu-info a {
+
+  color: white;
+
+  text-decoration: none;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.3);
+
+  transition: 0.2s;
+
+}
+
+.menu-info a:hover {
+
+  opacity: 0.7;
+
+  border-color: white;
+
+}
+
+/* =========================
+   CONTROLES
+========================= */
+
+.controls {
+
+  margin-top: 30px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid rgba(255,255,255,0.08);
+
+  opacity: 0.75;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+
+}
+
+/* =========================
+   RECORD DISPLAY
+========================= */
+
+.record {
+
+  margin-top: 25px;
+
+  font-size: 17px;
+
+  color: #ffffff;
+
+  opacity: 0.85;
+
+}
+
+/* =========================
+   GAME OVER OVERLAY
+========================= */
+
+#game-over {
+
+  position: fixed;
+
+  inset: 0;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  background:
+    rgba(0,0,0,0.72);
+
+  backdrop-filter: blur(8px);
+
+  z-index: 998;
+
+}
+
+/* =========================
+   GAME OVER BOX
+========================= */
+
+.game-over-box {
+
+  width: 500px;
+
+  padding: 40px;
+
+  border-radius: 24px;
+
+  background:
+    rgba(18,18,18,0.96);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  color: white;
+
+  text-align: center;
+
+}
+
+.game-over-box h2 {
+
+  font-size: 92px;
+
+  margin-bottom: 20px;
+
+  color: #ff1f2d;
+
+  background: none;
+
+  -webkit-text-fill-color: #ff1f2d;
+
+  text-shadow:
+    0 0 18px rgba(255, 31, 45, 0.65),
+    0 0 50px rgba(255, 31, 45, 0.25);
+
+}
+
+.game-over-box p {
+
+  font-size: 22px;
+
+  opacity: 0.8;
+
+  margin-bottom: 15px;
+
+}
+
+/* =========================
+   BOTÃO RESTART
+========================= */
+
+#restart-btn {
+
+  margin-top: 20px;
+
+  width: 100%;
+
+  padding: 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: white;
+
+  color: black;
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+#restart-btn:hover {
+
+  transform: scale(1.03);
+
+  opacity: 0.9;
+
+}
+
+/* =========================
+   MOBILE WARNING
+========================= */
+
+.mobile-warning {
+
+  margin-top: 20px;
+
+  font-size: 14px;
+
+  opacity: 0.5;
+
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  display: none;
+}

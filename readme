@@ -1,0 +1,157 @@
+# SWARM
+
+Um jogo 2D top-down de sobrevivência com foco em combate rápido, ondas de zumbis e boss fight progressivo.
+
+---
+
+## 🎮 Sobre o jogo
+
+SWARM é um jogo onde o jogador controla um sobrevivente armado enfrentando ondas infinitas de zumbis. O objetivo é simples: sobreviver o máximo possível, acumular pontos e derrotar um boss que aparece após um certo número de eliminações.
+
+O jogo mistura mecânicas de:
+- movimento livre em 2D
+- mira com mouse
+- disparo em tempo real
+- inimigos com IA básica de perseguição
+- sistema de progressão por kills
+- boss com múltiplas fases e habilidades
+
+---
+
+## 🧠 Mecânicas principais
+
+### 👤 Jogador
+- Movimento com WASD
+- Mira controlada pelo mouse
+- Disparo ao clicar
+- Sistema de vida (corações)
+
+---
+
+### 🧟 Zumbis
+- Spawn em bordas da tela
+- Perseguem o jogador automaticamente
+- Aumentam dificuldade com o tempo
+- Morrem ao serem atingidos por balas
+
+---
+
+### 👹 Boss Zombie
+Aparece após 30 zumbis eliminados.
+
+#### Estatísticas:
+- Vida: 50
+- Velocidade: média (aumenta em fúria)
+- Dano: alto (2 corações)
+
+#### Ataques:
+- **Tapão:** dano corpo a corpo em curta distância
+- **Cuspe tóxico:** projétil em direção ao jogador
+- **Invocação:** spawna zumbis adicionais
+- **Fúria:** ativa ao chegar em 15 de vida (aumenta velocidade e agressividade)
+
+---
+
+## 🧮 Sistema de pontuação
+
+- +1 ponto por zumbi eliminado
+- Progressão direta para spawn do boss
+- Score exibido em tempo real na HUD
+
+---
+
+## ⏱️ Sistema de sobrevivência
+
+- Timer baseado no tempo desde o início da partida
+- Exibido na HUD como tempo de sobrevivência
+- Usado como métrica de performance do jogador
+
+---
+
+## 🎯 Controles
+
+- **WASD** → movimento
+- **Mouse** → mira
+- **Clique esquerdo** → atirar
+- **Botão Play** → iniciar partida
+
+---
+
+## 🧱 Estrutura técnica
+
+O projeto é construído com:
+
+- HTML5 Canvas para renderização
+- JavaScript puro (Vanilla JS)
+- Sistema de game loop com `requestAnimationFrame`
+- Colisões baseadas em AABB
+- Spawn system baseado em intervalos
+
+---
+
+## ⚙️ Arquitetura do jogo
+
+O jogo é organizado em:
+
+- Player system (movimento, tiro, colisão)
+- Enemy system (spawn, IA simples)
+- Bullet system (movimento e colisão)
+- Boss system (múltiplas habilidades e estados)
+- HUD system (vida, score, timer)
+- Game loop central
+
+---
+
+## 📈 Dificuldade
+
+A dificuldade aumenta progressivamente devido a:
+
+- Spawn constante de inimigos
+- Pressão de movimento contínuo
+- Introdução do boss após threshold de kills
+- Ataques múltiplos simultâneos do boss
+
+---
+
+## 🚀 Objetivo do projeto
+
+Este projeto foi desenvolvido com foco em:
+- aprendizado de lógica de jogos
+- manipulação de canvas
+- organização de estados de jogo
+- colisões e física simples
+- construção de sistemas interativos em JavaScript puro
+
+---
+
+## 💡 Possíveis melhorias futuras
+
+- sistema de upgrades (arma, velocidade, vida)
+- múltiplos tipos de inimigos
+- fases com dificuldade progressiva
+- efeitos sonoros e música
+- barra de vida do boss
+- animações melhores para sprites
+- sistema de pause e restart sem reload
+- otimização de performance com pooling
+
+---
+
+## 🧠 Nota de desenvolvimento
+
+O projeto evoluiu de um protótipo simples para um sistema de sobrevivência com boss fight. A principal complexidade está na integração entre múltiplos sistemas simultâneos (spawn, colisão, IA e UI).
+
+---
+
+## 📁 Tecnologias
+
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- Canvas API
+
+---
+
+## 👨‍💻 Autor
+Feito por: Jorge Enrique Lopes de Souza
+Projeto desenvolvido como estudo de lógica de jogos e desenvolvimento front-end interativo.
