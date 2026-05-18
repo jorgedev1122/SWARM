@@ -1,0 +1,24 @@
+{
+  "Jogador": {
+    "profile": {
+      "coins": 9999,
+      "upgrades": {
+        "speed": 20,
+        "health": 10,
+        "luck": 100
+      },
+      "weapons": [
+        "default",
+        "knife",
+        "pistol",
+        "rifle"
+      ],
+      "equipped_weapon": "rifle"
+    },
+    "record": {
+      "player": "Jogador",
+      "score": 94,
+      "time_ms": 65951
+    }
+  }
+}

@@ -4,55 +4,188 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SWARM</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="menu">
+  <div class="main-menu">
+    <section class="menu-panel start-panel">
+      <div class="brand-lockup">
+        <img src="assets/soldier.png" alt="" class="brand-sprite">
+        <div>
+          <span class="eyebrow">survival canvas game</span>
+          <h1>SWARM</h1>
+        </div>
+      </div>
 
-  <div class="menu-box">
+      <label class="player-label" for="player-name">Nome do jogador</label>
+      <input
+        id="player-name"
+        class="player-name"
+        type="text"
+        maxlength="24"
+        autocomplete="nickname"
+        placeholder="Seu nome"
+        value="Jogador"
+      >
 
-    <h1>SWARM</h1>
+      <p id="menu-record" class="record">Recorde: --</p>
 
-    <p class="subtitle">
-      Sobreviva o máximo possível.
-    </p>
+      <div class="wallet-row">
+        <span>Moedas</span>
+        <strong id="coin-count">0</strong>
+      </div>
 
-    <button id="play-btn">
-      JOGAR
-    </button>
+      <button id="shop-toggle" class="secondary-btn" type="button">
+        LOJA / UPGRADES
+      </button>
 
-    <div class="menu-info">
+      <button id="play-btn" type="button">
+        JOGAR
+      </button>
+    </section>
 
+    <section id="shop-panel" class="menu-panel shop-panel">
+      <div class="shop-header">
+        <div>
+          <span class="eyebrow">progressão</span>
+          <h2>Loja do sobrevivente</h2>
+        </div>
+        <button id="shop-close" class="secondary-btn compact" type="button">VOLTAR</button>
+      </div>
+
+      <div class="upgrade-grid">
+        <button class="upgrade-card" data-upgrade="speed" type="button">
+          <span class="upgrade-icon">>>></span>
+          <strong>Velocidade</strong>
+          <small id="speed-level">0/20</small>
+          <em>3 moedas</em>
+        </button>
+
+        <button class="upgrade-card" data-upgrade="health" type="button">
+          <span class="upgrade-icon">♥</span>
+          <strong>Vida</strong>
+          <small id="health-level">0/10</small>
+          <em>3 moedas</em>
+        </button>
+
+        <button class="upgrade-card" data-upgrade="luck" type="button">
+          <span class="upgrade-icon">%</span>
+          <strong>Sorte</strong>
+          <small id="luck-level">0%</small>
+          <em>1 moeda</em>
+        </button>
+      </div>
+
+      <h3>Armas</h3>
+
+      <div class="weapon-grid">
+        <button class="weapon-card" data-weapon="default" type="button">
+          <img src="assets/soldier.png" alt="">
+          <strong>Soldado</strong>
+          <small>Arma padrão</small>
+        </button>
+
+        <button class="weapon-card" data-weapon="pistol" type="button">
+          <img src="assets/soldier2.gif" alt="">
+          <strong>Águia</strong>
+          <small>6 moedas | dano 5</small>
+        </button>
+
+        <button class="weapon-card" data-weapon="rifle" type="button">
+          <img src="assets/soldier3.png" alt="">
+          <strong>Executor</strong>
+          <small>15 moedas | dano 10</small>
+        </button>
+
+        <button class="weapon-card" data-weapon="knife" type="button">
+          <img src="assets/soldier4.png" alt="">
+          <strong>Ceifador</strong>
+          <small>25 moedas | melee</small>
+        </button>
+      </div>
+
+      <p id="shop-message" class="shop-message">Ganhe 3 moedas a cada 100 pontos no fim da partida.</p>
+    </section>
+
+    <section class="menu-panel project-panel">
+      <div class="project-copy">
+        <span class="eyebrow">resumo do projeto</span>
+        <h2>Combate rápido, ondas infinitas e boss fight progressivo.</h2>
+        <p>SWARM foi feito utilizando</p>
+
+        <ul>
+          <li>HTML5 Canvas</li>
+          <li>JavaScript</li>
+          <li>CSS3</li>
+          <li>Python</li>
+        </ul>
+
+        <p>
+          O jogo é um projeto rápido para praticar habilidades de desenvolvimento web, com foco em mecânicas de jogo, design de interface e otimização de desempenho. O objetivo é criar uma experiência divertida e desafiadora, onde o jogador enfrenta ondas de inimigos cada vez mais difíceis, culminando em uma batalha épica contra um boss final.
+        </p>
+      </div>
+
+      <div class="project-visual">
+        <img src="assets/zombie.png" alt="" class="zombie-preview">
+        <img src="assets/bullet.webp" alt="" class="bullet-preview">
+      </div>
+
+      <div class="more-projects">
+        <h3>Mais projetos</h3>
+
+        <div class="project-links">
+          <a href="https://jorgedev1122.github.io/Portifolio/" target="_blank" class="project-card">
+            <span>Portfolio</span>
+          </a>
+
+          <a href="https://github.com/jorgedev1122" target="_blank" class="project-card">
+            <span>GitHub</span>
+          </a>
+
+          <a href="https://jorgedev1122.github.io/Iron-Fist/" target="_blank" class="project-card">
+            <span>Projeto destaque 1</span>
+          </a>
+
+          <a href="https://jorgedev1122.github.io/Velocity-Dash/" target="_blank" class="project-card">
+            <span>Projeto destaque 2</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer id="credits" class="menu-footer">
       <p>Desenvolvido por Jorge</p>
-
       <a href="https://jorgedev1122.github.io/Portifolio/" target="_blank">
         Meu Portfólio
       </a>
-
-    </div>
-
+    </footer>
   </div>
-
 </div>
 
 <div id="game-over">
-
   <div class="game-over-box">
-
     <h2>GAME OVER</h2>
-
     <p id="final-score">Score: 0</p>
-
-    <button id="restart-btn">
-      JOGAR NOVAMENTE
-    </button>
-
+    <button id="restart-btn" type="button">JOGAR NOVAMENTE</button>
+    <button id="menu-btn" type="button">VOLTAR AO MENU</button>
   </div>
-
 </div>
 
 <canvas id="game"></canvas>
-  <script src="script.js"></script>
+
+<script src="systems/constants.js"></script>
+<script src="systems/player.js"></script>
+<script src="systems/bullets.js"></script>
+<script src="systems/bosses.js"></script>
+<script src="systems/enemies.js"></script>
+<script src="systems/collisions.js"></script>
+<script src="systems/effects.js"></script>
+<script src="systems/upgrades.js"></script>
+<script src="systems/save.js"></script>
+<script src="systems/profile.js"></script>
+<script src="systems/shop.js"></script>
+<script src="systems/ui.js"></script>
+<script src="systems/main.js"></script>
 </body>
 </html>

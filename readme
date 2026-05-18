@@ -37,11 +37,11 @@ O jogo mistura mecânicas de:
 ---
 
 ### 👹 Boss Zombie
-Aparece após 30 zumbis eliminados.
+Aparece a cada 30 zumbis eliminados.
 
 #### Estatísticas:
 - Vida: 50
-- Velocidade: média (aumenta em fúria)
+- Velocidade: média
 - Dano: alto (2 corações)
 
 #### Ataques:
