@@ -158,6 +158,10 @@ class SwarmHandler(SimpleHTTPRequestHandler):
             entry["record"] = run
             saved = True
 
+        # Adicionar moedas ganhas na partida
+        earned_coins = int(max(0, run["score"]) / 100) * 3
+        entry["profile"]["coins"] = max(0, entry["profile"]["coins"] + earned_coins)
+
         save_scores(scores)
 
         self.send_json({

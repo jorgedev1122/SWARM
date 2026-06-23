@@ -1,7 +1,7 @@
 {
   "Jogador": {
     "profile": {
-      "coins": 9999,
+      "coins": 10023,
       "upgrades": {
         "speed": 20,
         "health": 10,
@@ -17,8 +17,8 @@
     },
     "record": {
       "player": "Jogador",
-      "score": 94,
-      "time_ms": 65951
+      "score": 800,
+      "time_ms": 552
     }
   }
 }

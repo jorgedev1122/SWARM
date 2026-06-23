@@ -18,6 +18,8 @@
     state.status = "menu";
     dom.menu.style.display = "flex";
     dom.gameOver.style.display = "none";
+    console.log("Voltando ao menu, carregando perfil...");
+    window.SWARM.profile.load();
   }
 
   function showGame() {
@@ -86,6 +88,6 @@
     showGame,
     showGameOver,
     updateRecord,
-    drawHud
+    drawHud,
   };
 })();

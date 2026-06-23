@@ -46,7 +46,12 @@
       if (!this.active) return;
 
       this.active.hp = Math.max(0, this.active.hp - amount);
-      window.SWARM.effectSystem.burst(this.active.x + this.active.width / 2, this.active.y + this.active.height / 2, "#ff2b38", 10);
+      window.SWARM.effectSystem.burst(
+        this.active.x + this.active.width / 2,
+        this.active.y + this.active.height / 2,
+        "#ff2b38",
+        10,
+      );
 
       if (this.active.hp <= 0) {
         this.active = null;
@@ -60,17 +65,23 @@
       if (this.active) this.active.draw();
 
       const ctx = window.SWARM.ctx;
-      this.projectiles.forEach(projectile => {
+      this.projectiles.forEach((projectile) => {
         ctx.save();
         ctx.fillStyle = "rgba(124, 255, 91, 0.85)";
         ctx.shadowColor = "rgba(124, 255, 91, 0.65)";
         ctx.shadowBlur = 12;
         ctx.beginPath();
-        ctx.arc(projectile.x + projectile.width / 2, projectile.y + projectile.height / 2, projectile.width / 2, 0, Math.PI * 2);
+        ctx.arc(
+          projectile.x + projectile.width / 2,
+          projectile.y + projectile.height / 2,
+          projectile.width / 2,
+          0,
+          Math.PI * 2,
+        );
         ctx.fill();
         ctx.restore();
       });
-    }
+    },
   };
 
   class Boss {
@@ -92,7 +103,10 @@
     update(dt) {
       const bossCenter = utils.center(this);
       const playerCenter = utils.center(player);
-      const angle = Math.atan2(playerCenter.y - bossCenter.y, playerCenter.x - bossCenter.x);
+      const angle = Math.atan2(
+        playerCenter.y - bossCenter.y,
+        playerCenter.x - bossCenter.x,
+      );
 
       this.fury = this.hp <= this.maxHp * 0.3;
       this.angle = angle;
@@ -127,13 +141,14 @@
         dy: Math.sin(angle),
         speed: this.fury ? 330 : 250,
         damage: this.fury ? 2 : 1,
-        life: 3
+        life: 3,
       });
     }
 
     draw() {
-      const image = this.fury ? window.SWARM.assets.bossFury : window.SWARM.assets.boss;
-      utils.drawRotatedImage(image, this, this.angle);
+      const image = window.SWARM.assets.boss;
+      const ctx = window.SWARM.ctx;
+      ctx.drawImage(image, this.x, this.y, this.width, this.height);
     }
   }
 
