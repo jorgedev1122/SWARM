@@ -5,7 +5,6 @@ const url = require("url");
 
 const ROOT = path.resolve(__dirname);
 const SCORES_FILE = path.join(ROOT, "scores.json");
-const HOST = "127.0.0.1";
 const PORT = 8000;
 
 const DEFAULT_PROFILE = {
