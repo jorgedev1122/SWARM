@@ -1,194 +1,211 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SWARM</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div id="menu">
-  <div class="main-menu">
-    <section class="menu-panel start-panel">
-      <div class="brand-lockup">
-        <img src="assets/soldier.png" alt="" class="brand-sprite">
-        <div>
-          <span class="eyebrow">survival canvas game</span>
-          <h1>SWARM</h1>
-        </div>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SWARM</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="menu">
+      <div class="main-menu">
+        <section class="menu-panel start-panel">
+          <div class="brand-lockup">
+            <img src="assets/BOSS1.png" alt="" class="boss-preview" />
+            <div class="brand-copy">
+              <span class="eyebrow">survival canvas game</span>
+              <h1>SWARM</h1>
+              <p>Sobreviva a ondas, colete moedas e derrube o boss.</p>
+            </div>
+          </div>
 
-      <label class="player-label" for="player-name">Nome do jogador</label>
-      <input
-        id="player-name"
-        class="player-name"
-        type="text"
-        maxlength="24"
-        autocomplete="nickname"
-        placeholder="Seu nome"
-        value="Jogador"
-      >
+          <div class="menu-stats">
+            <p id="menu-record" class="record">Recorde: --</p>
+            <div class="wallet-row">
+              <span>Moedas</span>
+              <strong id="coin-count">0</strong>
+            </div>
+          </div>
 
-      <p id="menu-record" class="record">Recorde: --</p>
+          <label class="player-label" for="player-name">Nome do jogador</label>
+          <input
+            id="player-name"
+            class="player-name"
+            type="text"
+            maxlength="24"
+            autocomplete="nickname"
+            placeholder="Seu nome"
+            value="Jogador"
+          />
 
-      <div class="wallet-row">
-        <span>Moedas</span>
-        <strong id="coin-count">0</strong>
-      </div>
+          <div class="menu-actions">
+            <button id="shop-toggle" class="secondary-btn" type="button">
+              Loja / upgrades
+            </button>
 
-      <button id="shop-toggle" class="secondary-btn" type="button">
-        LOJA / UPGRADES
-      </button>
+            <button id="play-btn" type="button">Jogar</button>
+          </div>
+        </section>
 
-      <button id="play-btn" type="button">
-        JOGAR
-      </button>
-    </section>
+        <section id="shop-panel" class="menu-panel shop-panel">
+          <div class="shop-header">
+            <div>
+              <span class="eyebrow">progressao</span>
+              <h2>Loja do sobrevivente</h2>
+            </div>
+            <button id="shop-close" class="secondary-btn compact" type="button">
+              Voltar
+            </button>
+          </div>
 
-    <section id="shop-panel" class="menu-panel shop-panel">
-      <div class="shop-header">
-        <div>
-          <span class="eyebrow">progressão</span>
-          <h2>Loja do sobrevivente</h2>
-        </div>
-        <button id="shop-close" class="secondary-btn compact" type="button">VOLTAR</button>
-      </div>
+          <div class="upgrade-grid">
+            <button class="upgrade-card" data-upgrade="speed" type="button">
+              <span class="upgrade-icon">>>></span>
+              <strong>Velocidade</strong>
+              <small id="speed-level">0/20</small>
+              <em>3 moedas</em>
+            </button>
 
-      <div class="upgrade-grid">
-        <button class="upgrade-card" data-upgrade="speed" type="button">
-          <span class="upgrade-icon">>>></span>
-          <strong>Velocidade</strong>
-          <small id="speed-level">0/20</small>
-          <em>3 moedas</em>
-        </button>
+            <button class="upgrade-card" data-upgrade="health" type="button">
+              <span class="upgrade-icon">HP</span>
+              <strong>Vida</strong>
+              <small id="health-level">0/10</small>
+              <em>3 moedas</em>
+            </button>
 
-        <button class="upgrade-card" data-upgrade="health" type="button">
-          <span class="upgrade-icon">♥</span>
-          <strong>Vida</strong>
-          <small id="health-level">0/10</small>
-          <em>3 moedas</em>
-        </button>
+            <button class="upgrade-card" data-upgrade="luck" type="button">
+              <span class="upgrade-icon">%</span>
+              <strong>Sorte</strong>
+              <small id="luck-level">0%</small>
+              <em>1 moeda</em>
+            </button>
+          </div>
 
-        <button class="upgrade-card" data-upgrade="luck" type="button">
-          <span class="upgrade-icon">%</span>
-          <strong>Sorte</strong>
-          <small id="luck-level">0%</small>
-          <em>1 moeda</em>
-        </button>
-      </div>
+          <h3>Armas</h3>
 
-      <h3>Armas</h3>
+          <div class="weapon-grid">
+            <button class="weapon-card" data-weapon="default" type="button">
+              <img src="assets/soldier.png" alt="" />
+              <strong>Soldado</strong>
+              <small>Arma padrao</small>
+            </button>
 
-      <div class="weapon-grid">
-        <button class="weapon-card" data-weapon="default" type="button">
-          <img src="assets/soldier.png" alt="">
-          <strong>Soldado</strong>
-          <small>Arma padrão</small>
-        </button>
+            <button class="weapon-card" data-weapon="pistol" type="button">
+              <img src="assets/soldier2.gif" alt="" />
+              <strong>Aguia</strong>
+              <small>6 moedas | dano 5</small>
+            </button>
 
-        <button class="weapon-card" data-weapon="pistol" type="button">
-          <img src="assets/soldier2.gif" alt="">
-          <strong>Águia</strong>
-          <small>6 moedas | dano 5</small>
-        </button>
+            <button class="weapon-card" data-weapon="rifle" type="button">
+              <img src="assets/soldier3.png" alt="" />
+              <strong>Executor</strong>
+              <small>15 moedas | dano 10</small>
+            </button>
 
-        <button class="weapon-card" data-weapon="rifle" type="button">
-          <img src="assets/soldier3.png" alt="">
-          <strong>Executor</strong>
-          <small>15 moedas | dano 10</small>
-        </button>
+            <button class="weapon-card" data-weapon="knife" type="button">
+              <img src="assets/soldier4.png" alt="" />
+              <strong>Ceifador</strong>
+              <small>25 moedas | corpo a corpo</small>
+            </button>
+          </div>
 
-        <button class="weapon-card" data-weapon="knife" type="button">
-          <img src="assets/soldier4.png" alt="">
-          <strong>Ceifador</strong>
-          <small>25 moedas | dano corpo a corpo</small>
-        </button>
-      </div>
+          <p id="shop-message" class="shop-message">
+            Ganhe 3 moedas a cada 100 pontos no fim da partida.
+          </p>
+        </section>
 
-      <p id="shop-message" class="shop-message">Ganhe 3 moedas a cada 100 pontos no fim da partida.</p>
-    </section>
+        <section class="menu-panel project-panel">
+          <div class="project-visual">
+            <img src="assets/zombie.png" alt="" class="zombie-preview" />
+            <img src="assets/bullet.webp" alt="" class="bullet-preview" />
+            <span class="impact-burst" aria-hidden="true"></span>
+          </div>
 
-    <section class="menu-panel project-panel">
-      <div class="project-copy">
-        <span class="eyebrow">resumo do projeto</span>
-        <h2>Combate rápido, ondas infinitas e boss fight progressivo.</h2>
-        <p>SWARM foi feito utilizando</p>
+          <div class="project-copy">
+            <span class="eyebrow">projeto destaque</span>
+            <h2>Combate rapido, ondas infinitas e boss progressivo.</h2>
+            <p>Feito com HTML5 Canvas, JavaScript, CSS3 e Python.</p>
+          </div>
 
-        <ul>
-          <li>HTML5 Canvas</li>
-          <li>JavaScript</li>
-          <li>CSS3</li>
-          <li>Python</li>
-        </ul>
+          <div class="more-projects">
+            <h3>Links</h3>
 
-        <p>
-          O jogo é um projeto rápido para praticar habilidades de desenvolvimento web, com foco em mecânicas de jogo, design de interface e otimização de desempenho. O objetivo é criar uma experiência divertida e desafiadora, onde o jogador enfrenta ondas de inimigos cada vez mais difíceis, culminando em uma batalha épica contra um boss final.
-        </p>
-      </div>
+            <div class="project-links">
+              <a
+                href="https://jorgedev1122.github.io/Portifolio/"
+                target="_blank"
+                class="project-card"
+              >
+                <span>Portfolio</span>
+              </a>
 
-      <div class="project-visual">
-        <img src="assets/zombie.png" alt="" class="zombie-preview">
-        <img src="assets/bullet.webp" alt="" class="bullet-preview">
-      </div>
+              <a
+                href="https://www.instagram.com/j0rge.2211/"
+                target="_blank"
+                class="project-card"
+              >
+                <span>Instagram</span>
+              </a>
 
-      <div class="more-projects">
-        <h3>Mais projetos</h3>
+              <a
+                href="https://jorgedev1122.github.io/Iron-Fist/"
+                target="_blank"
+                class="project-card"
+              >
+                <span>Projeto destaque 1</span>
+              </a>
 
-        <div class="project-links">
-          <a href="https://jorgedev1122.github.io/Portifolio/" target="_blank" class="project-card">
-            <span>Portfolio</span>
+              <a
+                href="https://jorgedev1122.github.io/SK8HUB/"
+                target="_blank"
+                class="project-card"
+              >
+                <span>Projeto destaque 2</span>
+              </a>
+
+              <a
+                href="https://github.com/jorgedev1122"
+                target="_blank"
+                class="project-card"
+              >
+                <span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <footer id="credits" class="menu-footer">
+          <p>Desenvolvido por Jorge</p>
+          <a href="https://jorgedev1122.github.io/Portifolio/" target="_blank">
+            Meu Portfolio
           </a>
-
-          <a href="https://github.com/jorgedev1122" target="_blank" class="project-card">
-            <span>GitHub</span>
-          </a>
-
-          <a href="https://jorgedev1122.github.io/Iron-Fist/" target="_blank" class="project-card">
-            <span>Projeto destaque 1</span>
-          </a>
-
-          <a href="https://jorgedev1122.github.io/Velocity-Dash/" target="_blank" class="project-card">
-            <span>Projeto destaque 2</span>
-          </a>
-
-          <a href="https://jorgedev1122.github.io/SK8HUB/" target="_blank" class="project-card">
-            <span>Projeto destaque 3</span>
-        </div>
+        </footer>
       </div>
-    </section>
+    </div>
 
-    <footer id="credits" class="menu-footer">
-      <p>Desenvolvido por Jorge</p>
-      <a href="https://jorgedev1122.github.io/Portifolio/" target="_blank">
-        Meu Portfólio
-      </a>
-    </footer>
-  </div>
-</div>
+    <div id="game-over">
+      <div class="game-over-box">
+        <h2>GAME OVER</h2>
+        <p id="final-score">Score: 0</p>
+        <button id="restart-btn" type="button">JOGAR NOVAMENTE</button>
+        <button id="menu-btn" type="button">VOLTAR AO MENU</button>
+      </div>
+    </div>
 
-<div id="game-over">
-  <div class="game-over-box">
-    <h2>GAME OVER</h2>
-    <p id="final-score">Score: 0</p>
-    <button id="restart-btn" type="button">JOGAR NOVAMENTE</button>
-    <button id="menu-btn" type="button">VOLTAR AO MENU</button>
-  </div>
-</div>
+    <canvas id="game"></canvas>
 
-<canvas id="game"></canvas>
-
-<script src="systems/constants.js"></script>
-<script src="systems/player.js"></script>
-<script src="systems/bullets.js"></script>
-<script src="systems/bosses.js"></script>
-<script src="systems/enemies.js"></script>
-<script src="systems/collisions.js"></script>
-<script src="systems/effects.js"></script>
-<script src="systems/upgrades.js"></script>
-<script src="systems/save.js"></script>
-<script src="systems/profile.js"></script>
-<script src="systems/shop.js"></script>
-<script src="systems/ui.js"></script>
-<script src="systems/main.js"></script>
-</body>
+    <script src="systems/constants.js"></script>
+    <script src="systems/player.js"></script>
+    <script src="systems/bullets.js"></script>
+    <script src="systems/bosses.js"></script>
+    <script src="systems/enemies.js"></script>
+    <script src="systems/collisions.js"></script>
+    <script src="systems/effects.js"></script>
+    <script src="systems/upgrades.js"></script>
+    <script src="systems/save.js"></script>
+    <script src="systems/profile.js"></script>
+    <script src="systems/shop.js"></script>
+    <script src="systems/ui.js"></script>
+    <script src="systems/main.js"></script>
+  </body>
 </html>

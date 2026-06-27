@@ -33,7 +33,7 @@
       maxEnemies: 90,
     },
     boss: {
-      killInterval: 25,
+      killInterval: 30,
     },
     player: {
       width: 70,

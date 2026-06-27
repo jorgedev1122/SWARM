@@ -18,14 +18,16 @@
     const weapon = window.SWARM.playerSystem.getWeapon();
     const center = utils.center(player);
     const angle = Math.atan2(input.mouse.y - center.y, input.mouse.x - center.x);
+    const directionX = Math.cos(angle);
+    const directionY = Math.sin(angle);
     cooldown = weapon.fireDelay;
 
     if (weapon.melee) {
       const reach = 78;
       bullets.push({
         type: "melee",
-        x: center.x + Math.cos(angle) * reach - 45,
-        y: center.y + Math.sin(angle) * reach - 45,
+        x: center.x + directionX * reach - 45,
+        y: center.y + directionY * reach - 45,
         width: 90,
         height: 90,
         angle,
@@ -36,14 +38,16 @@
       return;
     }
 
+    const muzzleDistance = Math.max(player.width, player.height) * 0.38;
+
     bullets.push({
       type: "bullet",
-      x: center.x - 9,
-      y: center.y - 9,
+      x: center.x + directionX * muzzleDistance - 9,
+      y: center.y + directionY * muzzleDistance - 9,
       width: 18,
       height: 18,
-      dx: Math.cos(angle),
-      dy: Math.sin(angle),
+      dx: directionX,
+      dy: directionY,
       speed: weapon.bulletSpeed,
       angle,
       damage: weapon.damage,
@@ -99,7 +103,7 @@
 
       window.SWARM.ctx.save();
       window.SWARM.ctx.translate(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2);
-      window.SWARM.ctx.rotate(bullet.angle);
+      window.SWARM.ctx.rotate(bullet.angle + Math.PI / 2);
       window.SWARM.ctx.drawImage(bulletImg, -10, -10, 20, 20);
       window.SWARM.ctx.restore();
     });

@@ -15,7 +15,8 @@
     maybeSpawn() {
       const interval = window.SWARM.config.boss.killInterval;
       if (this.active || state.kills < interval) return;
-      if (state.kills - state.lastBossKillMark < interval) return;
+      if (state.kills % interval !== 0) return;
+      if (state.kills === state.lastBossKillMark) return;
 
       state.lastBossKillMark = state.kills;
       this.active = new Boss();
