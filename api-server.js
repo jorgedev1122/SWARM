@@ -5,7 +5,6 @@ const url = require("url");
 
 const ROOT = path.resolve(__dirname);
 const SCORES_FILE = path.join(ROOT, "scores.json");
-const PORT = process.env.PORT || 8000;
 
 const DEFAULT_PROFILE = {
   coins: 0,
@@ -116,6 +115,8 @@ function serveFile(req, res, pathname) {
     stream.pipe(res);
   });
 }
+
+const PORT = process.env.PORT || 8000;
 
 const server = http.createServer((req, res) => {
   const parsed = url.parse(req.url, true);
@@ -229,8 +230,6 @@ const server = http.createServer((req, res) => {
   if (filePath === "/") filePath = "/index.html";
   serveFile(req, res, filePath);
 });
-
-const PORT = process.env.PORT || 8000;
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`SWARM Node server running on port ${PORT}`);
