@@ -118,7 +118,7 @@
     ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
 
     ctx.fillStyle = "#ffeded";
-    ctx.font = "20px Impact, Arial";
+    ctx.font = "20px Impact, Arial";  
     ctx.textBaseline = "top";
     ctx.fillText(`Kills: ${state.kills}`, boxX + 14, boxY + 12);
     ctx.fillText(`Tempo: ${seconds}s`, boxX + 14, boxY + 38);
