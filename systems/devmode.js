@@ -1,186 +1,285 @@
-// systems/devmode.js
-// Ferramentas exclusivas para desenvolvimento/testes do SWARM.
+(function () {
+  "use strict";
 
-const DEV_MODE = new URLSearchParams(window.location.search).get("dev") === "1";
+  const systems = window.SWARM;
 
-const DevMode = {
-  enabled: DEV_MODE,
+  const params = new URLSearchParams(window.location.search);
+  const enabled = params.get("dev") === "1";
 
-  commands: {},
+  if (!enabled) return;
 
-  register(name, callback) {
-    if (typeof callback !== "function") {
-      console.warn(`[DEV] Comando inválido: ${name}`);
-      return;
-    }
+  const DevMode = {
+    enabled: true,
 
-    this.commands[name] = callback;
-  },
+    init() {
+      console.log(
+        "%c SWARM DEV MODE ATIVADO ",
+        "background:#111;color:#00ff88;font-weight:bold;padding:6px 10px;border-radius:4px;",
+      );
 
-  run(name, ...args) {
-    if (!this.enabled) {
-      console.warn("[DEV] Dev Mode não está ativado.");
-      return;
-    }
+      this.createPanel();
+      this.bindShortcuts();
+    },
 
-    const command = this.commands[name];
+    addCoins(amount) {
+      const profile = systems.profile.data;
 
-    if (!command) {
-      console.warn(`[DEV] Comando não encontrado: ${name}`);
-      return;
-    }
+      profile.coins += Number(amount);
+      systems.profile.save();
+      systems.shop.render();
 
-    try {
-      return command(...args);
-    } catch (error) {
-      console.error(`[DEV] Erro no comando "${name}":`, error);
-    }
-  },
+      this.log(`+${amount} moedas. Total: ${profile.coins}`);
+    },
 
-  log(message) {
-    if (this.enabled) {
+    setCoins(amount) {
+      const profile = systems.profile.data;
+
+      profile.coins = Math.max(0, Number(amount));
+      systems.profile.save();
+      systems.shop.render();
+
+      this.log(`Moedas definidas para ${profile.coins}`);
+    },
+
+    fullHealth() {
+      systems.player.health = systems.player.maxHealth;
+
+      this.log(
+        `Vida restaurada: ${systems.player.health}/${systems.player.maxHealth}`,
+      );
+    },
+
+    damagePlayer(amount = 10) {
+      systems.playerSystem.damage(Number(amount));
+
+      this.log(`Jogador recebeu ${amount} de dano.`);
+    },
+
+    toggleGodMode() {
+      systems.player.devGodMode = !systems.player.devGodMode;
+
+      this.log(
+        `God Mode: ${systems.player.devGodMode ? "ATIVADO" : "DESATIVADO"}`,
+      );
+
+      this.updatePanel();
+    },
+
+    unlockWeapons() {
+      const profile = systems.profile.data;
+      const weapons = systems.config.profile.weapons;
+
+      Object.keys(weapons).forEach((weaponId) => {
+        if (!profile.weapons.includes(weaponId)) {
+          profile.weapons.push(weaponId);
+        }
+      });
+
+      systems.profile.save();
+      systems.shop.render();
+
+      this.log("Todas as armas foram desbloqueadas.");
+    },
+
+    maxUpgrades() {
+      const profile = systems.profile.data;
+      const max = systems.config.profile.upgradeMax;
+
+      Object.keys(max).forEach((upgrade) => {
+        profile.upgrades[upgrade] = max[upgrade];
+      });
+
+      systems.profile.save();
+      systems.shop.render();
+
+      // Reaplica os atributos do jogador imediatamente.
+      systems.playerSystem.applyProfile(profile);
+
+      this.log("Todos os upgrades foram maximizados.");
+    },
+
+    resetProfile() {
+      const confirmed = window.confirm(
+        "ATENÇÃO: isso vai zerar o perfil do SWARM. Continuar?",
+      );
+
+      if (!confirmed) return;
+
+      systems.profile.data = {
+        coins: 0,
+        upgrades: {
+          speed: 0,
+          health: 0,
+          luck: 0,
+        },
+        weapons: ["default"],
+        equipped_weapon: "default",
+        level: 0,
+      };
+
+      localStorage.removeItem("swarm-profile");
+
+      systems.profile.save();
+      systems.shop.render();
+      systems.playerSystem.applyProfile(systems.profile.data);
+
+      this.log("Perfil resetado.");
+    },
+
+    save() {
+      systems.profile.save();
+      this.log("Perfil salvo.");
+    },
+
+    updatePanel() {
+      const status = document.getElementById("swarm-dev-status");
+
+      if (!status) return;
+
+      status.textContent = systems.player.devGodMode
+        ? "🛡️ God Mode: ON"
+        : "🛡️ God Mode: OFF";
+    },
+
+    log(message) {
       console.log(`[SWARM DEV] ${message}`);
-    }
-  },
+    },
 
-  init() {
-    if (!this.enabled) return;
+    createButton(text, callback) {
+      const button = document.createElement("button");
 
-    console.log(
-      "%c SWARM DEV MODE ATIVADO ",
-      "background:#111;color:#00ff88;font-weight:bold;padding:4px 8px;",
-    );
+      button.type = "button";
+      button.textContent = text;
 
-    this.createPanel();
-    this.registerDefaultCommands();
-  },
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
-  registerDefaultCommands() {
-    // Essas funções serão conectadas aos sistemas do jogo.
-    this.register("heal", () => {
-      if (window.SWARM?.player?.heal) {
-        window.SWARM.player.heal();
-      }
-    });
+        callback();
+      });
 
-    this.register("fullHealth", () => {
-      if (window.SWARM?.player?.fullHealth) {
-        window.SWARM.player.fullHealth();
-      }
-    });
-
-    this.register("addCoins", (amount = 1000) => {
-      if (window.SWARM?.player?.addCoins) {
-        window.SWARM.player.addCoins(amount);
-      }
-    });
-
-    this.register("godMode", () => {
-      if (window.SWARM?.player) {
-        window.SWARM.player.godMode = !window.SWARM.player.godMode;
-
-        console.log(
-          `[DEV] God Mode: ${window.SWARM.player.godMode ? "ON" : "OFF"}`,
-        );
-      }
-    });
-
-    this.register("killEnemies", () => {
-      if (window.SWARM?.enemies?.killAll) {
-        window.SWARM.enemies.killAll();
-      }
-    });
-
-    this.register("save", () => {
-      if (window.SWARM?.save?.save) {
-        window.SWARM.save.save();
-      }
-    });
-
-    this.register("resetSave", () => {
-      if (window.SWARM?.save?.reset) {
-        window.SWARM.save.reset();
-      }
-    });
-  },
-
-  createPanel() {
-    const panel = document.createElement("div");
-
-    panel.id = "swarm-dev-panel";
-
-    panel.innerHTML = `
-            <div class="dev-title">SWARM DEV MODE</div>
-
-            <button data-command="fullHealth">
-                ❤️ Vida máxima
-            </button>
-
-            <button data-command="addCoins">
-                🪙 +1000 moedas
-            </button>
-
-            <button data-command="godMode">
-                🛡️ God Mode
-            </button>
-
-            <button data-command="killEnemies">
-                💀 Matar inimigos
-            </button>
-
-            <button data-command="save">
-                💾 Salvar
-            </button>
-
-            <button data-command="resetSave">
-                ⚠️ Resetar save
-            </button>
-        `;
-
-    Object.assign(panel.style, {
-      position: "fixed",
-      top: "15px",
-      right: "15px",
-      zIndex: "999999",
-      background: "#111",
-      color: "#fff",
-      padding: "12px",
-      borderRadius: "10px",
-      border: "1px solid #333",
-      fontFamily: "Arial, sans-serif",
-      width: "190px",
-      boxShadow: "0 5px 25px rgba(0,0,0,.5)",
-    });
-
-    panel.querySelectorAll("button").forEach((button) => {
       Object.assign(button.style, {
-        display: "block",
         width: "100%",
-        marginTop: "7px",
+        marginTop: "6px",
         padding: "7px",
-        cursor: "pointer",
         background: "#222",
         color: "#fff",
         border: "1px solid #444",
         borderRadius: "6px",
+        cursor: "pointer",
       });
 
-      button.addEventListener("click", () => {
-        const command = button.dataset.command;
-        this.run(command);
+      return button;
+    },
+
+    createPanel() {
+      const panel = document.createElement("div");
+
+      panel.id = "swarm-dev-panel";
+
+      Object.assign(panel.style, {
+        position: "fixed",
+        top: "15px",
+        right: "15px",
+        zIndex: "999999",
+        width: "220px",
+        maxHeight: "90vh",
+        overflowY: "auto",
+        padding: "12px",
+        background: "#111",
+        color: "#fff",
+        border: "1px solid #444",
+        borderRadius: "10px",
+        fontFamily: "Arial, sans-serif",
+        boxShadow: "0 10px 30px rgba(0,0,0,.5)",
       });
+
+      const title = document.createElement("div");
+
+      title.textContent = "⚙️ SWARM DEV MODE";
+
+      Object.assign(title.style, {
+        fontWeight: "bold",
+        marginBottom: "8px",
+        color: "#00ff88",
+      });
+
+      panel.appendChild(title);
+
+      const status = document.createElement("div");
+
+      status.id = "swarm-dev-status";
+      status.textContent = "🛡️ God Mode: OFF";
+
+      Object.assign(status.style, {
+        fontSize: "12px",
+        marginBottom: "8px",
+        opacity: "0.8",
+      });
+
+      panel.appendChild(status);
+
+      panel.appendChild(
+        this.createButton("🪙 +1.000 moedas", () => this.addCoins(1000)),
+      );
+
+      panel.appendChild(
+        this.createButton("🪙 +100.000 moedas", () => this.addCoins(100000)),
+      );
+
+      panel.appendChild(
+        this.createButton("💰 1.000.000 moedas", () => this.setCoins(1000000)),
+      );
+
+      panel.appendChild(
+        this.createButton("❤️ Vida máxima", () => this.fullHealth()),
+      );
+
+      panel.appendChild(
+        this.createButton("🛡️ God Mode", () => this.toggleGodMode()),
+      );
+
+      panel.appendChild(
+        this.createButton("🔓 Desbloquear armas", () => this.unlockWeapons()),
+      );
+
+      panel.appendChild(
+        this.createButton("⬆️ Max upgrades", () => this.maxUpgrades()),
+      );
+
+      panel.appendChild(
+        this.createButton("💾 Salvar perfil", () => this.save()),
+      );
+
+      panel.appendChild(
+        this.createButton("🗑️ Resetar perfil", () => this.resetProfile()),
+      );
+
+      document.body.appendChild(panel);
+    },
+
+    bindShortcuts() {
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "F2") {
+          const panel = document.getElementById("swarm-dev-panel");
+
+          if (panel) {
+            panel.style.display =
+              panel.style.display === "none" ? "block" : "none";
+          }
+        }
+      });
+    },
+  };
+
+  systems.devMode = DevMode;
+
+  // Espera o DOM e os sistemas estarem prontos.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      DevMode.init();
     });
-
-    document.body.appendChild(panel);
-  },
-};
-
-window.DevMode = DevMode;
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
+  } else {
     DevMode.init();
-  });
-} else {
-  DevMode.init();
-}
+  }
+})();
