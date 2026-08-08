@@ -13,6 +13,8 @@
     gameOver: document.getElementById("game-over"),
     finalScore: document.getElementById("final-score"),
     playerName: document.getElementById("player-name"),
+    welcomeScreen: document.getElementById("welcome-screen"),
+    enterMenuBtn: document.getElementById("enter-menu-btn"),
     menuRecord: document.getElementById("menu-record"),
     coinCount: document.getElementById("coin-count"),
     shopToggle: document.getElementById("shop-toggle"),
@@ -33,7 +35,7 @@
       maxEnemies: 90,
     },
     boss: {
-      killInterval: 30,
+      killInterval: 35,
     },
     player: {
       width: 70,
@@ -88,11 +90,19 @@
           bulletSpeed: 820,
           sprite: "assets/soldier3.png",
         },
+        archer: {
+          name: "Arqueiro",
+          cost: 20,
+          damage: 20,
+          fireDelay: 0.5,
+          bulletSpeed: 900,
+          sprite: "assets/archer.png",
+        },
         knife: {
           name: "Ceifador",
           cost: 25,
-          damage: 18,
-          fireDelay: 0.0,
+          damage: 10,
+          fireDelay: 0.7,
           melee: true,
           sprite: "assets/soldier4.png",
         },
@@ -120,11 +130,13 @@
 
   const imageSources = {
     player: "assets/soldier.png",
+    archer: "assets/archer.png",
     pistol: "assets/soldier2.gif",
     rifle: "assets/soldier3.png",
     knife: "assets/soldier4.png",
     enemy: "assets/zombie.png",
     bullet: "assets/bullet.webp",
+    arrow: "assets/arrow.webp",
     boss: "assets/BOSS1.png",
     bossFury: "assets/BOSS2.gif",
   };
@@ -194,10 +206,18 @@
 
   window.addEventListener("resize", resizeCanvas);
   window.addEventListener("keydown", (event) => {
-    input.keys[event.key.toLowerCase()] = true;
+    const key = event.key.toLowerCase();
+    input.keys[key] = true;
+    if (key === " " || key === "spacebar" || key === "space") {
+      input.keys.space = true;
+    }
   });
   window.addEventListener("keyup", (event) => {
-    input.keys[event.key.toLowerCase()] = false;
+    const key = event.key.toLowerCase();
+    input.keys[key] = false;
+    if (key === " " || key === "spacebar" || key === "space") {
+      input.keys.space = false;
+    }
   });
   window.addEventListener("mousemove", updateMouse);
   window.addEventListener("mousedown", (event) => {

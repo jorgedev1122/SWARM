@@ -7,7 +7,6 @@
   function defaultProfile() {
     return {
       coins: 0,
-      level: 0,
       upgrades: {
         speed: 0,
         health: 0,

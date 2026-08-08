@@ -36,7 +36,18 @@
   function draw() {
     drawBackground();
 
-    if (systems.state.status !== "playing" && systems.state.status !== "gameover") return;
+    if (
+      systems.state.status !== "playing" &&
+      systems.state.status !== "gameover"
+    )
+      return;
+
+    const shake = systems.bossSystem.getShakeOffset();
+    const isShaking = shake.x !== 0 || shake.y !== 0;
+    if (isShaking) {
+      systems.ctx.save();
+      systems.ctx.translate(shake.x, shake.y);
+    }
 
     systems.enemySystem.draw();
     systems.bossSystem.draw();
@@ -44,6 +55,10 @@
     systems.playerSystem.draw();
     systems.effectSystem.draw();
     systems.ui.drawHud();
+
+    if (isShaking) {
+      systems.ctx.restore();
+    }
   }
 
   function animate(now) {
@@ -75,11 +90,12 @@
 
     addScore(amount) {
       systems.state.score += amount;
-    }
+    },
   };
 
   systems.shop.bind();
   systems.ui.bind();
+  systems.ui.showWelcome();
   systems.profile.load();
 
   requestAnimationFrame(animate);

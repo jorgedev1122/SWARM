@@ -7,13 +7,45 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="welcome-screen">
+      <div class="welcome-card">
+        <span class="eyebrow">boas-vindas</span>
+        <h1>Bem-vindo a SWARM</h1>
+        <p class="welcome-copy">
+          Prepare-se para sobreviver a ondas infinitas, coletar moedas e
+          enfrentar o boss.
+        </p>
+        <div class="welcome-credits">
+          <p>Créditos</p>
+          <p>
+            Desenvolvimento -
+            <a
+              href="https://www.instagram.com/j0rge.2211/"
+              style="color: #f7f3ec"
+              target="_blank"
+              >Jorge Enrique</a
+            >
+          </p>
+          <p>
+            Referências e feedback -
+            <a
+              href="https://www.instagram.com/umcara.jpeg/"
+              style="color: #f7f3ec"
+              target="_blank"
+              >Guilherme Ferreira</a
+            >
+          </p>
+        </div>
+        <button id="enter-menu-btn" type="button">Entrar</button>
+      </div>
+    </div>
+
     <div id="menu">
       <div class="main-menu">
         <section class="menu-panel start-panel">
           <div class="brand-lockup">
             <img src="assets/BOSS1.png" alt="" class="boss-preview" />
             <div class="brand-copy">
-              <span class="eyebrow">survival canvas game</span>
               <h1>SWARM</h1>
               <p>Sobreviva a ondas, colete moedas e derrube o boss.</p>
             </div>
@@ -100,6 +132,12 @@
               <img src="assets/soldier3.png" alt="" />
               <strong>Executor</strong>
               <small>15 moedas | dano 10</small>
+            </button>
+
+            <button class="weapon-card" data-weapon="archer" type="button">
+              <img src="assets/archer.png" alt="" />
+              <strong>Arqueiro</strong>
+              <small>20 moedas | dano 20</small>
             </button>
 
             <button class="weapon-card" data-weapon="knife" type="button">

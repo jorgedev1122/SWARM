@@ -5,7 +5,12 @@
 
   function hitEnemy(enemy, damage) {
     enemy.health -= damage;
-    window.SWARM.effectSystem.burst(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, "#7cff5b", 6);
+    window.SWARM.effectSystem.burst(
+      enemy.x + enemy.width / 2,
+      enemy.y + enemy.height / 2,
+      "#ff4b4b",
+      6,
+    );
 
     if (enemy.health <= 0) {
       window.SWARM.enemySystem.remove(enemy);
@@ -17,8 +22,8 @@
   }
 
   function bulletsVsEnemies() {
-    window.SWARM.bullets.slice().forEach(bullet => {
-      window.SWARM.enemies.slice().forEach(enemy => {
+    window.SWARM.bullets.slice().forEach((bullet) => {
+      window.SWARM.enemies.slice().forEach((enemy) => {
         if (!utils.aabb(bullet, enemy)) return;
         if (bullet.type === "melee" && bullet.hit.has(enemy)) return;
 
@@ -37,7 +42,7 @@
     const boss = window.SWARM.bossSystem.active;
     if (!boss) return;
 
-    window.SWARM.bullets.slice().forEach(bullet => {
+    window.SWARM.bullets.slice().forEach((bullet) => {
       if (!utils.aabb(bullet, boss)) return;
       if (bullet.type === "melee" && bullet.hit.has(boss)) return;
 
@@ -52,7 +57,7 @@
   }
 
   function enemiesVsPlayer() {
-    window.SWARM.enemies.forEach(enemy => {
+    window.SWARM.enemies.forEach((enemy) => {
       if (utils.aabb(enemy, player)) {
         window.SWARM.playerSystem.damage(enemy.contactDamage);
       }
@@ -65,7 +70,7 @@
   }
 
   function bossProjectilesVsPlayer() {
-    window.SWARM.bossSystem.projectiles.slice().forEach(projectile => {
+    window.SWARM.bossSystem.projectiles.slice().forEach((projectile) => {
       if (!utils.aabb(projectile, player)) return;
 
       window.SWARM.playerSystem.damage(projectile.damage);
@@ -82,6 +87,6 @@
   }
 
   window.SWARM.collisionSystem = {
-    update
+    update,
   };
 })();

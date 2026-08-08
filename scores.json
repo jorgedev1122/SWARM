@@ -1,7 +1,7 @@
 {
-  "Jogador": {
+  "Powpowpow": {
     "profile": {
-      "coins": 10023,
+      "coins": 10000,
       "upgrades": {
         "speed": 20,
         "health": 10,
@@ -19,6 +19,29 @@
       "player": "Jogador",
       "score": 800,
       "time_ms": 552
+    }
+  },
+  "Jogador": {
+    "profile": {
+      "coins": 9753,
+      "upgrades": {
+        "speed": 20,
+        "health": 10,
+        "luck": 100
+      },
+      "weapons": [
+        "archer",
+        "default",
+        "knife",
+        "pistol",
+        "rifle"
+      ],
+      "equipped_weapon": "rifle"
+    },
+    "record": {
+      "player": "Jogador",
+      "score": 241,
+      "time_ms": 154201
     }
   }
 }

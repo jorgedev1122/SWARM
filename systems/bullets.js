@@ -39,19 +39,22 @@
     }
 
     const muzzleDistance = Math.max(player.width, player.height) * 0.38;
+    const isArcher = player.weapon === "archer";
+    const projectileAsset = isArcher ? "arrow" : "bullet";
 
     bullets.push({
       type: "bullet",
+      assetKey: projectileAsset,
       x: center.x + directionX * muzzleDistance - 9,
       y: center.y + directionY * muzzleDistance - 9,
-      width: 18,
-      height: 18,
+      width: isArcher ? 28 : 18,
+      height: isArcher ? 10 : 18,
       dx: directionX,
       dy: directionY,
       speed: weapon.bulletSpeed,
       angle,
       damage: weapon.damage,
-      life: 1.8
+      life: isArcher ? 1.35 : 1.8
     });
   }
 
@@ -85,8 +88,6 @@
   }
 
   function draw() {
-    const bulletImg = window.SWARM.assets.bullet;
-
     bullets.forEach(bullet => {
       if (bullet.type === "melee") {
         window.SWARM.ctx.save();
@@ -101,10 +102,15 @@
         return;
       }
 
+      const projectileImg = window.SWARM.assets[bullet.assetKey || "bullet"];
       window.SWARM.ctx.save();
       window.SWARM.ctx.translate(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2);
       window.SWARM.ctx.rotate(bullet.angle + Math.PI / 2);
-      window.SWARM.ctx.drawImage(bulletImg, -10, -10, 20, 20);
+      if (bullet.assetKey === "arrow") {
+        window.SWARM.ctx.drawImage(projectileImg, -bullet.width / 2, -bullet.height / 2, bullet.width, bullet.height);
+      } else {
+        window.SWARM.ctx.drawImage(projectileImg, -10, -10, 20, 20);
+      }
       window.SWARM.ctx.restore();
     });
   }

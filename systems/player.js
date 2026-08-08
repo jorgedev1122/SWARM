@@ -13,14 +13,18 @@
     health: config.player.baseHealth,
     maxHealth: config.player.baseHealth,
     invulnerableFor: 0,
-    weapon: "default"
+    weapon: "default",
   };
 
   function getWeapon() {
-    return window.SWARM.config.profile.weapons[player.weapon] || window.SWARM.config.profile.weapons.default;
+    return (
+      window.SWARM.config.profile.weapons[player.weapon] ||
+      window.SWARM.config.profile.weapons.default
+    );
   }
 
   function getSpriteKey() {
+    if (player.weapon === "archer") return "archer";
     if (player.weapon === "pistol") return "pistol";
     if (player.weapon === "rifle") return "rifle";
     if (player.weapon === "knife") return "knife";
@@ -35,7 +39,8 @@
     player.speed = config.player.baseSpeed + speedBonus;
     player.maxHealth = config.player.baseHealth + healthBonus;
     player.health = player.maxHealth;
-    player.weapon = profile && profile.equipped_weapon ? profile.equipped_weapon : "default";
+    player.weapon =
+      profile && profile.equipped_weapon ? profile.equipped_weapon : "default";
   }
 
   function reset(profile) {
@@ -67,7 +72,10 @@
     player.y = utils.clamp(player.y, 0, canvas.height - player.height);
 
     const center = utils.center(player);
-    player.angle = Math.atan2(input.mouse.y - center.y, input.mouse.x - center.x);
+    player.angle = Math.atan2(
+      input.mouse.y - center.y,
+      input.mouse.x - center.x,
+    );
     player.invulnerableFor = Math.max(0, player.invulnerableFor - dt);
   }
 
@@ -84,10 +92,56 @@
     return true;
   }
 
+  function dodgeDash() {
+    const padding = 24;
+    const dashDistance = 160;
+    const leftSpace = player.x - padding;
+    const rightSpace = canvas.width - (player.x + player.width) - padding;
+    let targetX = player.x;
+    let targetY = player.y;
+
+    if (Math.abs(leftSpace - rightSpace) > 16) {
+      targetX =
+        leftSpace > rightSpace
+          ? Math.max(padding, player.x - dashDistance)
+          : Math.min(
+              canvas.width - player.width - padding,
+              player.x + dashDistance,
+            );
+    } else {
+      const topSpace = player.y - padding;
+      const bottomSpace = canvas.height - (player.y + player.height) - padding;
+      if (topSpace > bottomSpace) {
+        targetY = Math.max(padding, player.y - dashDistance);
+      } else {
+        targetY = Math.min(
+          canvas.height - player.height - padding,
+          player.y + dashDistance,
+        );
+      }
+    }
+
+    player.x = utils.clamp(
+      targetX,
+      padding,
+      canvas.width - player.width - padding,
+    );
+    player.y = utils.clamp(
+      targetY,
+      padding,
+      canvas.height - player.height - padding,
+    );
+    const center = utils.center(player);
+    window.SWARM.effectSystem.burst(center.x, center.y, "#88ffff", 12);
+  }
+
   function draw() {
     const sprite = window.SWARM.assets[getSpriteKey()];
 
-    if (player.invulnerableFor > 0 && Math.floor(performance.now() / 80) % 2 === 0) {
+    if (
+      player.invulnerableFor > 0 &&
+      Math.floor(performance.now() / 80) % 2 === 0
+    ) {
       return;
     }
 
@@ -100,7 +154,8 @@
     update,
     draw,
     damage,
+    dodgeDash,
     getWeapon,
-    applyProfile
+    applyProfile,
   };
 })();

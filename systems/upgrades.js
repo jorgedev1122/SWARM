@@ -32,14 +32,14 @@
 
       ctx.fillStyle = "#222";
       ctx.fillRect(x, y, width, height);
-      ctx.fillStyle = "#7cff5b";
+      ctx.fillStyle = "#ff7b7b";
       ctx.fillRect(x, y, progress * width, height);
       ctx.strokeStyle = "white";
       ctx.strokeRect(x, y, width, height);
       ctx.fillStyle = "white";
       ctx.font = "16px Arial";
       ctx.fillText(`LEVEL ${this.level}`, x, y + 40);
-    }
+    },
   };
 
   window.SWARM.progression = progression;
