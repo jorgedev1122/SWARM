@@ -14,6 +14,7 @@
     maxHealth: config.player.baseHealth,
     invulnerableFor: 0,
     weapon: "default",
+    devGodMode: false,
   };
 
   function getWeapon() {
@@ -80,6 +81,8 @@
   }
 
   function damage(amount) {
+    if (player.devGodMode) return false;
+
     if (player.invulnerableFor > 0) return false;
 
     player.health = Math.max(0, player.health - amount);

@@ -220,39 +220,39 @@
       panel.appendChild(status);
 
       panel.appendChild(
-        this.createButton("🪙 +1.000 moedas", () => this.addCoins(1000)),
+        this.createButton("✪ +1.000 moedas", () => this.addCoins(1000)),
       );
 
       panel.appendChild(
-        this.createButton("🪙 +100.000 moedas", () => this.addCoins(100000)),
+        this.createButton("✪✪✪ +100.000 moedas", () => this.addCoins(100000)),
       );
 
       panel.appendChild(
-        this.createButton("💰 1.000.000 moedas", () => this.setCoins(1000000)),
+        this.createButton("$$$ 1.000.000 moedas", () => this.setCoins(1000000)),
       );
 
       panel.appendChild(
-        this.createButton("❤️ Vida máxima", () => this.fullHealth()),
+        this.createButton("❤︎ Vida máxima", () => this.fullHealth()),
       );
 
       panel.appendChild(
-        this.createButton("🛡️ God Mode", () => this.toggleGodMode()),
+        this.createButton("♛ God Mode", () => this.toggleGodMode()),
       );
 
       panel.appendChild(
-        this.createButton("🔓 Desbloquear armas", () => this.unlockWeapons()),
+        this.createButton("🔒︎ Desbloquear armas", () => this.unlockWeapons()),
       );
 
       panel.appendChild(
-        this.createButton("⬆️ Max upgrades", () => this.maxUpgrades()),
+        this.createButton("⬆ Max upgrades", () => this.maxUpgrades()),
       );
 
       panel.appendChild(
-        this.createButton("💾 Salvar perfil", () => this.save()),
+        this.createButton("🗎 Salvar perfil", () => this.save()),
       );
 
       panel.appendChild(
-        this.createButton("🗑️ Resetar perfil", () => this.resetProfile()),
+        this.createButton("🗙 Resetar perfil", () => this.resetProfile()),
       );
 
       document.body.appendChild(panel);
