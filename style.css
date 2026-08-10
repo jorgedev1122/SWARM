@@ -90,14 +90,17 @@ body.boss-stage.boss-fury canvas {
   justify-content: center;
   overflow: hidden;
   padding: 14px;
+
   background:
-    radial-gradient(
-      circle at 20% 18%,
-      rgba(121, 31, 44, 0.38),
-      transparent 28%
-    ),
-    radial-gradient(circle at 82% 76%, rgba(38, 91, 78, 0.36), transparent 30%),
-    rgba(3, 5, 7, 0.84);
+    radial-gradient(circle at 20% 18%, rgba(0, 0, 0, 0.38), transparent 28%),
+    radial-gradient(circle at 82% 76%, rgb(0, 0, 0), transparent 30%),
+    linear-gradient(rgba(3, 5, 7, 0.72), rgba(0, 0, 0, 0.88)),
+    url("./assets/welcome-bg.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   backdrop-filter: blur(12px);
   animation: overlayIn 0.45s ease both;
 }
@@ -167,8 +170,8 @@ body.boss-stage.boss-fury canvas {
   padding: 14px 20px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ffffff, #69686800);
-  color: #111;
+  background: linear-gradient(135deg, #e2b65f, #e2b65f);
+  color: #080707;
   font-size: 1rem;
   font-weight: 800;
   cursor: pointer;

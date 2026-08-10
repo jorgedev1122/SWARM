@@ -40,6 +40,18 @@
     });
   }
 
+  function explosion(x, y, maxRadius = 90) {
+    effects.push({
+      type: "explosion",
+      x,
+      y,
+      radius: 8,
+      maxRadius,
+      life: 0.3,
+      maxLife: 0.3,
+    });
+  }
+
   function update(dt) {
     for (let index = effects.length - 1; index >= 0; index -= 1) {
       const effect = effects[index];
@@ -59,29 +71,55 @@
 
     effects.forEach((effect) => {
       ctx.save();
+
       const alpha = Math.max(0, effect.life / effect.maxLife);
       ctx.globalAlpha = alpha;
 
-      if (effect.type === "lightning") {
+      if (effect.type === "explosion") {
+        const progress = 1 - effect.life / effect.maxLife;
+        const radius =
+          effect.radius + (effect.maxRadius - effect.radius) * progress;
+
+        // Campo externo
+        ctx.strokeStyle = "#ff4b1f";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(effect.x, effect.y, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Área interna
+        ctx.fillStyle = "rgba(255, 120, 20, 0.18)";
+        ctx.beginPath();
+        ctx.arc(effect.x, effect.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Anel interno
+        ctx.strokeStyle = "#ffd166";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(effect.x, effect.y, radius * 0.7, 0, Math.PI * 2);
+        ctx.stroke();
+      } else if (effect.type === "lightning") {
         ctx.strokeStyle = effect.color;
         ctx.lineWidth = effect.width;
         ctx.beginPath();
+
         const dx = (effect.x2 - effect.x1) / effect.segments;
         const dy = (effect.y2 - effect.y1) / effect.segments;
-        let px = effect.x1;
-        let py = effect.y1;
-        ctx.moveTo(px, py);
+
+        ctx.moveTo(effect.x1, effect.y1);
 
         for (let index = 1; index <= effect.segments; index += 1) {
           const nx = effect.x1 + dx * index;
           const ny = effect.y1 + dy * index;
+
+          const distance = Math.hypot(dx, dy) || 1;
           const offset = (Math.random() - 0.5) * 18 * (alpha + 0.2);
+
           ctx.lineTo(
-            nx + (dy * offset) / Math.hypot(dx, dy),
-            ny - (dx * offset) / Math.hypot(dx, dy),
+            nx + (dy * offset) / distance,
+            ny - (dx * offset) / distance,
           );
-          px = nx;
-          py = ny;
         }
 
         ctx.stroke();
@@ -100,6 +138,7 @@
     reset,
     burst,
     lightning,
+    explosion,
     update,
     draw,
   };

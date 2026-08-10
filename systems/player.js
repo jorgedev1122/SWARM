@@ -29,6 +29,7 @@
     if (player.weapon === "pistol") return "pistol";
     if (player.weapon === "rifle") return "rifle";
     if (player.weapon === "knife") return "knife";
+    if (player.weapon === "bazooka") return "bazooka";
     return "player";
   }
 

@@ -5,6 +5,7 @@
 
   function hitEnemy(enemy, damage) {
     enemy.health -= damage;
+
     window.SWARM.effectSystem.burst(
       enemy.x + enemy.width / 2,
       enemy.y + enemy.height / 2,
@@ -21,12 +22,62 @@
     }
   }
 
+  // 💥 Explosão da bazuca
+  function bazookaExplosion(x, y, damage, radius = 90) {
+    // Cria o efeito visual
+    window.SWARM.effectSystem.explosion(x, y, radius);
+
+    // Dano nos inimigos próximos
+    window.SWARM.enemies.slice().forEach((enemy) => {
+      const center = utils.center(enemy);
+
+      const distance = Math.hypot(center.x - x, center.y - y);
+
+      if (distance <= radius) {
+        hitEnemy(enemy, damage);
+      }
+    });
+
+    // Dano no boss, se estiver dentro da explosão
+    const boss = window.SWARM.bossSystem.active;
+
+    if (boss) {
+      const center = utils.center(boss);
+
+      const distance = Math.hypot(center.x - x, center.y - y);
+
+      if (distance <= radius) {
+        window.SWARM.bossSystem.damage(damage);
+      }
+    }
+  }
+
   function bulletsVsEnemies() {
     window.SWARM.bullets.slice().forEach((bullet) => {
-      window.SWARM.enemies.slice().forEach((enemy) => {
-        if (!utils.aabb(bullet, enemy)) return;
-        if (bullet.type === "melee" && bullet.hit.has(enemy)) return;
+      if (bullet.exploded) return;
 
+      window.SWARM.enemies.slice().forEach((enemy) => {
+        if (bullet.exploded) return;
+        if (!utils.aabb(bullet, enemy)) return;
+
+        if (bullet.type === "melee" && bullet.hit.has(enemy)) {
+          return;
+        }
+
+        // 🚀 BAZUCA
+        if (bullet.isBazooka) {
+          const impactX = enemy.x + enemy.width / 2;
+          const impactY = enemy.y + enemy.height / 2;
+
+          bullet.exploded = true;
+
+          bazookaExplosion(impactX, impactY, bullet.damage, 150);
+
+          window.SWARM.bulletSystem.remove(bullet);
+          return;
+        }
+
+        // Ataques normais
         hitEnemy(enemy, bullet.damage);
 
         if (bullet.type === "melee") {
@@ -43,8 +94,25 @@
     if (!boss) return;
 
     window.SWARM.bullets.slice().forEach((bullet) => {
+      if (bullet.exploded) return;
       if (!utils.aabb(bullet, boss)) return;
-      if (bullet.type === "melee" && bullet.hit.has(boss)) return;
+
+      // 🚀 Bazuca acertando diretamente o boss
+      if (bullet.isBazooka) {
+        const impactX = boss.x + boss.width / 2;
+        const impactY = boss.y + boss.height / 2;
+
+        bullet.exploded = true;
+
+        bazookaExplosion(impactX, impactY, bullet.damage, 90);
+
+        window.SWARM.bulletSystem.remove(bullet);
+        return;
+      }
+
+      if (bullet.type === "melee" && bullet.hit.has(boss)) {
+        return;
+      }
 
       window.SWARM.bossSystem.damage(bullet.damage);
 
@@ -64,6 +132,7 @@
     });
 
     const boss = window.SWARM.bossSystem.active;
+
     if (boss && utils.aabb(boss, player)) {
       window.SWARM.playerSystem.damage(boss.contactDamage);
     }
@@ -74,8 +143,12 @@
       if (!utils.aabb(projectile, player)) return;
 
       window.SWARM.playerSystem.damage(projectile.damage);
+
       const index = window.SWARM.bossSystem.projectiles.indexOf(projectile);
-      if (index >= 0) window.SWARM.bossSystem.projectiles.splice(index, 1);
+
+      if (index >= 0) {
+        window.SWARM.bossSystem.projectiles.splice(index, 1);
+      }
     });
   }
 

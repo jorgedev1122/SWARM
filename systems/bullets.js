@@ -17,7 +17,10 @@
 
     const weapon = window.SWARM.playerSystem.getWeapon();
     const center = utils.center(player);
-    const angle = Math.atan2(input.mouse.y - center.y, input.mouse.x - center.x);
+    const angle = Math.atan2(
+      input.mouse.y - center.y,
+      input.mouse.x - center.x,
+    );
     const directionX = Math.cos(angle);
     const directionY = Math.sin(angle);
     cooldown = weapon.fireDelay;
@@ -33,28 +36,37 @@
         angle,
         damage: weapon.damage,
         life: 0.08,
-        hit: new Set()
+        hit: new Set(),
       });
       return;
     }
 
     const muzzleDistance = Math.max(player.width, player.height) * 0.38;
     const isArcher = player.weapon === "archer";
-    const projectileAsset = isArcher ? "arrow" : "bullet";
+    const isBazooka = player.weapon === "bazooka";
+
+    let projectileAsset = "bullet";
+
+    if (isArcher) {
+      projectileAsset = "arrow";
+    } else if (isBazooka) {
+      projectileAsset = "bazookabullet";
+    }
 
     bullets.push({
       type: "bullet",
       assetKey: projectileAsset,
+      isBazooka: isBazooka,
       x: center.x + directionX * muzzleDistance - 9,
       y: center.y + directionY * muzzleDistance - 9,
-      width: isArcher ? 28 : 18,
-      height: isArcher ? 10 : 18,
+      width: isArcher ? 28 : isBazooka ? 32 : 18,
+      height: isArcher ? 10 : isBazooka ? 16 : 18,
       dx: directionX,
       dy: directionY,
       speed: weapon.bulletSpeed,
       angle,
       damage: weapon.damage,
-      life: isArcher ? 1.35 : 1.8
+      life: isArcher ? 1.35 : isBazooka ? 2 : 1.8,
     });
   }
 
@@ -88,10 +100,13 @@
   }
 
   function draw() {
-    bullets.forEach(bullet => {
+    bullets.forEach((bullet) => {
       if (bullet.type === "melee") {
         window.SWARM.ctx.save();
-        window.SWARM.ctx.translate(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2);
+        window.SWARM.ctx.translate(
+          bullet.x + bullet.width / 2,
+          bullet.y + bullet.height / 2,
+        );
         window.SWARM.ctx.rotate(bullet.angle);
         window.SWARM.ctx.strokeStyle = "rgba(255, 236, 92, 0.75)";
         window.SWARM.ctx.lineWidth = 5;
@@ -104,10 +119,19 @@
 
       const projectileImg = window.SWARM.assets[bullet.assetKey || "bullet"];
       window.SWARM.ctx.save();
-      window.SWARM.ctx.translate(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2);
+      window.SWARM.ctx.translate(
+        bullet.x + bullet.width / 2,
+        bullet.y + bullet.height / 2,
+      );
       window.SWARM.ctx.rotate(bullet.angle + Math.PI / 2);
       if (bullet.assetKey === "arrow") {
-        window.SWARM.ctx.drawImage(projectileImg, -bullet.width / 2, -bullet.height / 2, bullet.width, bullet.height);
+        window.SWARM.ctx.drawImage(
+          projectileImg,
+          -bullet.width / 2,
+          -bullet.height / 2,
+          bullet.width,
+          bullet.height,
+        );
       } else {
         window.SWARM.ctx.drawImage(projectileImg, -10, -10, 20, 20);
       }
@@ -120,6 +144,6 @@
     reset,
     update,
     draw,
-    remove
+    remove,
   };
 })();
