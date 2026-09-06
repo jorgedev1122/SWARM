@@ -14,8 +14,11 @@
     maxHealth: config.player.baseHealth,
     invulnerableFor: 0,
     weapon: "default",
+    characterId: "player_default",
+    damageMultiplier: 1,
     devGodMode: false,
   };
+  let lavaMage = null;
 
   function getWeapon() {
     return (
@@ -37,12 +40,43 @@
     const upgrades = profile && profile.upgrades ? profile.upgrades : {};
     const speedBonus = Number(upgrades.speed || 0) * 9;
     const healthBonus = Number(upgrades.health || 0);
+    const characterId =
+      profile && profile.equipped_character === "lava_mage"
+        ? "lava_mage"
+        : "player_default";
+    const isLavaMage = characterId === "lava_mage";
 
-    player.speed = config.player.baseSpeed + speedBonus;
-    player.maxHealth = config.player.baseHealth + healthBonus;
+    player.characterId = characterId;
+    player.speed =
+      (config.player.baseSpeed + speedBonus) * (isLavaMage ? 0.8 : 1);
+    player.maxHealth = Math.max(
+      1,
+      Math.round(
+        (config.player.baseHealth + healthBonus) * (isLavaMage ? 1.2 : 1),
+      ),
+    );
     player.health = player.maxHealth;
+    player.damageMultiplier = isLavaMage ? 1.3 : 1;
     player.weapon =
       profile && profile.equipped_weapon ? profile.equipped_weapon : "default";
+
+    lavaMage = null;
+    if (isLavaMage && typeof window.SWARM.LavaMage === "function") {
+      try {
+        lavaMage = new window.SWARM.LavaMage({
+          x: player.x,
+          y: player.y,
+          width: player.width,
+          height: player.height,
+          speed: player.speed,
+          maxHealth: player.maxHealth,
+        });
+      } catch (error) {
+        // The canvas fallback below keeps the selected character playable if
+        // an external character implementation is unavailable.
+        lavaMage = null;
+      }
+    }
   }
 
   function reset(profile) {
@@ -82,6 +116,7 @@
   }
 
   function damage(amount) {
+    if (window.SWARM.game?.vehicles?.vehicle?.occupied) return false;
     if (player.devGodMode) return false;
 
     if (player.invulnerableFor > 0) return false;
@@ -140,6 +175,56 @@
   }
 
   function draw() {
+    if (player.characterId === "lava_mage") {
+      if (lavaMage && typeof lavaMage.draw === "function") {
+        try {
+          Object.assign(lavaMage, {
+            x: player.x,
+            y: player.y,
+            width: player.width,
+            height: player.height,
+            angle: player.angle,
+            health: player.health,
+            maxHealth: player.maxHealth,
+          });
+          lavaMage.draw(window.SWARM.ctx);
+          return;
+        } catch (error) {
+          lavaMage = null;
+        }
+      }
+
+      const ctx = window.SWARM.ctx;
+      const center = utils.center(player);
+      const radius = Math.max(player.width, player.height) * 0.58;
+      const aura = ctx.createRadialGradient(
+        center.x,
+        center.y,
+        5,
+        center.x,
+        center.y,
+        radius,
+      );
+      aura.addColorStop(0, "#fff0a6");
+      aura.addColorStop(0.28, "#ff9d1f");
+      aura.addColorStop(0.65, "#e33a13");
+      aura.addColorStop(1, "rgba(110, 15, 8, 0.1)");
+
+      ctx.save();
+      ctx.shadowColor = "rgba(255, 89, 20, 0.9)";
+      ctx.shadowBlur = 26;
+      ctx.fillStyle = aura;
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, radius * 0.72, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#3d1010";
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, radius * 0.31, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      return;
+    }
+
     const sprite = window.SWARM.assets[getSpriteKey()];
 
     if (
@@ -160,6 +245,8 @@
     damage,
     dodgeDash,
     getWeapon,
+    getDamageMultiplier: () => player.damageMultiplier,
+    isLavaMage: () => player.characterId === "lava_mage",
     applyProfile,
   };
 })();

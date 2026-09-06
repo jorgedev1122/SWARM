@@ -11,6 +11,7 @@ const DEFAULT_PROFILE = {
   upgrades: { speed: 0, health: 0, luck: 0 },
   weapons: ["default"],
   equipped_weapon: "default",
+  modes_unlocked: ["survival"],
 };
 
 function loadScores() {
@@ -68,6 +69,14 @@ function getPlayerEntry(scores, player) {
     },
     weapons: Array.from(new Set(["default", ...weapons.map(String)])),
     equipped_weapon: String(profile.equipped_weapon || "default"),
+    modes_unlocked: Array.from(
+      new Set([
+        "survival",
+        ...(Array.isArray(profile.modes_unlocked)
+          ? profile.modes_unlocked.map(String)
+          : []),
+      ]),
+    ),
   };
 
   if (!cleanProfile.weapons.includes(cleanProfile.equipped_weapon))

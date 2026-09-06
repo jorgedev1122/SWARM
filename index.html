@@ -5,7 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWARM</title>
     <link rel="stylesheet" href="style.css" />
+        <style>
+      .mode-selector-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+      }
+
+      .mode-selector-overlay.open {
+        display: flex;
+      }
+
+      .mode-selector-box {
+        width: min(500px, calc(100vw - 32px));
+        padding: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        background: rgba(15, 15, 15, 0.98);
+        box-shadow: 0 24px 120px rgba(0, 0, 0, 0.6);
+        text-align: center;
+        color: #f7f3ec;
+      }
+
+      .mode-selector-box h2 {
+        color: #ffffff;
+        font-size: 2rem;
+        margin-bottom: 24px;
+        text-shadow: 0 5px 0 rgba(0, 0, 0, 0.45);
+      }
+
+      .mode-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .mode-card {
+        display: grid;
+        gap: 8px;
+        justify-items: center;
+        padding: 20px;
+        color: #f4f1ea;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.045);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .mode-card:hover {
+        border-color: rgba(226, 182, 95, 0.5);
+        background: rgba(255, 255, 255, 0.09);
+        transform: translateY(-2px);
+      }
+
+      .mode-card:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .mode-card:disabled:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.045);
+        transform: none;
+      }
+
+      .mode-icon {
+        font-size: 2.5rem;
+      }
+
+      .mode-card strong {
+        color: #ffffff;
+        font-size: 1.2rem;
+      }
+
+      .mode-card small {
+        color: rgba(244, 241, 234, 0.66);
+        font-size: 0.85rem;
+      }
+
+      .mode-card em {
+        color: #e2b65f;
+        font-style: normal;
+        font-weight: 800;
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 600px) {
+        .mode-selector-box {
+          padding: 20px;
+        }
+
+        .mode-selector-box h2 {
+          font-size: 1.5rem;
+        }
+
+        .mode-options {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
+    <audio id="bgMusic" loop>
+      <source src="assets/background-music.mp3" type="audio/mpeg" />
+  </audio>
   <body>
     <div id="welcome-screen">
       <div class="welcome-card">
@@ -39,6 +148,30 @@
         <button id="enter-menu-btn" type="button">Entrar</button>
       </div>
     </div>
+
+    <div id="mode-selector" class="mode-selector-overlay">
+      <div class="mode-selector-box">
+      <h2>Escolha o modo de jogo</h2>
+
+      <div class="mode-options">
+        <button class="mode-card" data-mode="survival" type="button">
+        <span class="mode-icon">🌊</span>
+        <strong>Sobrevivência</strong>
+          <small>Enfrente ondas infinitas de inimigos e colete moedas.</small>
+          <em>Desbloqueado</em>
+        </button>
+
+      <button class="mode-card" data-mode="boss_rush" type="button" id="boss-rush-btn">
+            <span class="mode-icon">👹</span>
+            <strong>Boss Rush</strong>
+            <small>5 bosses seguidos</small>
+            <em id="boss-rush-cost">65 moedas para desbloquear</em>
+          </button>
+        </div>
+
+        <button id="mode-cancel-btn" class="secondary-btn" type="button">Cancelar</button>
+      </div>
+    </div>        
 
     <div id="menu">
       <div class="main-menu">
@@ -160,7 +293,7 @@
             </button>
           
 
-          <p id="shop-message" class="shop-message"
+          <p id="shop-message" class="shop-message">
             Ganhe 3 moedas a cada 100 pontos no fim da partida.
           </p>
         </section>
@@ -260,6 +393,11 @@
     <script src="systems/profile.js"></script>
     <script src="systems/shop.js"></script>
     <script src="systems/ui.js"></script>
+    <script src="public/js/barrel.js"></script>
+    <script src="public/js/car.js"></script>
+    <script src="public/js/parry.js"></script>
+    <script src="public/js/npc.js"></script>
+    <script src="public/js/game.js"></script>
     <script src="systems/main.js"></script>
     <script src="systems/devmode.js"></script>
   </body>

@@ -3,7 +3,11 @@
 
   const { player, state, utils } = window.SWARM;
 
-  function hitEnemy(enemy, damage) {
+  function hitEnemy(enemy, damage, source) {
+    if (window.SWARM.enemySystem.damage) {
+      return window.SWARM.enemySystem.damage(enemy, damage, source);
+    }
+
     enemy.health -= damage;
 
     window.SWARM.effectSystem.burst(
@@ -19,7 +23,10 @@
       window.SWARM.game.addScore(1);
       window.SWARM.progression.gainXP(1);
       window.SWARM.bossSystem.maybeSpawn();
+      return true;
     }
+
+    return false;
   }
 
   // 💥 Explosão da bazuca
@@ -78,7 +85,17 @@
         }
 
         // Ataques normais
-        hitEnemy(enemy, bullet.damage);
+        const killed = hitEnemy(enemy, bullet.damage, {
+          color: bullet.type === "lava" ? "#ff8a1f" : "#ff4b4b",
+        });
+
+        if (bullet.type === "lava" && !killed) {
+          window.SWARM.enemySystem.applyBurn(
+            enemy,
+            bullet.burnDuration || 2,
+            5,
+          );
+        }
 
         if (bullet.type === "melee") {
           bullet.hit.add(enemy);
@@ -125,6 +142,8 @@
   }
 
   function enemiesVsPlayer() {
+    if (window.SWARM.game?.vehicles?.vehicle?.occupied) return;
+
     window.SWARM.enemies.forEach((enemy) => {
       if (utils.aabb(enemy, player)) {
         window.SWARM.playerSystem.damage(enemy.contactDamage);
@@ -139,6 +158,8 @@
   }
 
   function bossProjectilesVsPlayer() {
+    if (window.SWARM.game?.vehicles?.vehicle?.occupied) return;
+
     window.SWARM.bossSystem.projectiles.slice().forEach((projectile) => {
       if (!utils.aabb(projectile, player)) return;
 

@@ -41,6 +41,7 @@
     },
 
     maybeSpawn() {
+      if (state.mode === "boss_rush") return;
       const interval = window.SWARM.config.boss.killInterval;
       if (this.active || state.kills < interval) return;
       if (state.kills % interval !== 0) return;
@@ -50,6 +51,14 @@
       window.SWARM.enemySystem.reset();
       this.active = new Boss();
       this.triggerShake(2, 8);
+      syncBossBodyState();
+    },
+
+    spawnRushBoss(index, total) {
+      this.projectiles.length = 0;
+      window.SWARM.enemySystem.reset();
+      this.active = new Boss({ rushIndex: index, rushTotal: total });
+      this.triggerShake(1.1, 6 + index * 1.5);
       syncBossBodyState();
     },
 
@@ -91,11 +100,13 @@
       );
 
       if (this.active.hp <= 0) {
+        const defeatedBoss = this.active;
         this.active = null;
         this.projectiles.length = 0;
         syncBossBodyState();
         window.SWARM.progression.gainXP(10);
         window.SWARM.game.addScore(10);
+        window.SWARM.game.onBossDefeated?.(defeatedBoss);
       }
     },
 
@@ -130,15 +141,26 @@
   };
 
   class Boss {
-    constructor() {
+    constructor(options = {}) {
       this.width = 220;
       this.height = 220;
       this.x = canvas.width / 2 - this.width / 2;
       this.y = -this.height;
-      this.maxHp = 50 + Math.floor(state.kills / 25) * 15;
+      this.rushIndex = Number(options.rushIndex || 0);
+      this.rushTotal = Number(options.rushTotal || 0);
+      this.isRush = this.rushTotal > 0;
+
+      if (this.isRush) {
+        this.maxHp = 2500 + this.rushIndex * 500;
+      } else {
+        const baseHp = 50 + Math.floor(state.kills / 25) * 15;
+        this.maxHp = baseHp;
+      }
+
       this.hp = this.maxHp;
-      this.speed = 85;
+      this.speed = this.isRush ? 95 + this.rushIndex * 12 : 85;
       this.angle = 0;
+      this.contactDamage = 2;
       this.attackTimer = 0.9;
       this.attackCycle = 0;
       this.summonTimer = 3.2;
@@ -157,7 +179,11 @@
 
       this.fury = this.hp <= this.maxHp * 0.3;
       this.angle = angle;
-      this.speed = this.fury ? 130 : 85;
+      this.speed = this.fury
+        ? 130
+        : this.isRush
+          ? 95 + this.rushIndex * 12
+          : 85;
       this.x += Math.cos(angle) * this.speed * dt;
       this.y += Math.sin(angle) * this.speed * dt;
 
@@ -318,13 +344,6 @@
       ctx.beginPath();
       ctx.arc(centerX, centerY, auraRadius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
-
-      ctx.save();
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(this.x, this.y - 16, this.width, 8);
-      ctx.fillStyle = this.fury ? "#ff6dff" : "#8b4dff";
-      ctx.fillRect(this.x, this.y - 16, (this.hp / this.maxHp) * this.width, 8);
       ctx.restore();
 
       ctx.save();

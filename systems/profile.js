@@ -4,20 +4,37 @@
   const { config, dom } = window.SWARM;
   const storageKey = "swarm-profile";
 
+  // ✅ Definir window.SWARM.save UMA VEZ no início
+  async function getJson(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`GET ${url} failed`);
+    return response.json();
+  }
+
+  async function postJson(url, payload) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error(`POST ${url} failed`);
+    return response.json();
+  }
+
+  window.SWARM.save = { getJson, postJson };
+
   function defaultProfile() {
     return {
       coins: 0,
-      upgrades: {
-        speed: 0,
-        health: 0,
-        luck: 0,
-      },
+      upgrades: { speed: 0, health: 0, luck: 0 },
       weapons: ["default"],
       equipped_weapon: "default",
+      characters: ["player_default"],
+      equipped_character: "player_default",
+      modes_unlocked: ["survival"],
     };
   }
 
-  // DEBUG
   window.DEBUG_PROFILE = true;
 
   function normalize(raw) {
@@ -28,6 +45,12 @@
     );
     profile.weapons = Array.from(
       new Set(["default"].concat(profile.weapons || [])),
+    );
+    profile.characters = Array.from(
+      new Set(["player_default"].concat(profile.characters || [])),
+    );
+    profile.modes_unlocked = Array.from(
+      new Set(["survival"].concat(profile.modes_unlocked || [])),
     );
 
     Object.keys(config.profile.upgradeMax).forEach((key) => {
@@ -41,9 +64,12 @@
 
     profile.coins = Math.max(0, Number(profile.coins || 0));
     profile.level = Math.max(0, Number(profile.level || 0));
-
     if (!profile.weapons.includes(profile.equipped_weapon)) {
       profile.equipped_weapon = "default";
+    }
+
+    if (!profile.characters.includes(profile.equipped_character)) {
+      profile.equipped_character = "player_default";
     }
 
     return profile;
@@ -110,10 +136,11 @@
       }
 
       try {
-        await window.SWARM.save.postJson("/api/profile", {
+        const saved = await window.SWARM.save.postJson("/api/profile", {
           player,
           profile: this.data,
         });
+        if (saved.profile) this.data = normalize(saved.profile);
       } catch (error) {
         if (window.DEBUG_PROFILE) {
           console.error("Erro ao salvar perfil na API:", error);
@@ -126,6 +153,7 @@
       const player = playerName();
       const currentLevel = window.SWARM.progression.level;
       const earnedCoins = Math.floor(window.SWARM.state.score / 100) * 3;
+      const bossRushReward = Number(window.SWARM.state.bossRushReward || 0);
 
       if (window.DEBUG_PROFILE) {
         console.log("=== SALVANDO PARTIDA ===");
@@ -136,7 +164,7 @@
         console.log("Moedas antes:", this.data.coins);
       }
 
-      this.data.coins += earnedCoins;
+      this.data.coins += earnedCoins + bossRushReward;
       this.data.level = Math.max(this.data.level, currentLevel);
 
       if (window.DEBUG_PROFILE) {
@@ -151,6 +179,9 @@
         console.log("Salvo no localStorage:", JSON.parse(saved));
       }
 
+      await this.save();
+
+      let savedRecord = false;
       try {
         const data = await window.SWARM.save.postJson("/api/score", {
           player,
@@ -159,6 +190,7 @@
           level: currentLevel,
         });
 
+        savedRecord = Boolean(data.saved);
         this.record = data.record || this.record;
         if (data.profile) this.data = normalize(data.profile);
       } catch (error) {
@@ -169,7 +201,10 @@
 
       window.SWARM.shop.render();
       window.SWARM.ui.updateRecord(this.record);
+      return { saved: savedRecord, record: this.record };
     },
+
+    getPlayerName: playerName,
   };
 
   window.SWARM.profile = profile;

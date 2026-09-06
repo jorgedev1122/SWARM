@@ -109,10 +109,31 @@
         bazooka: {
           name: "Lançador",
           cost: 30,
-          damage: 50,
+          damage: 300,
           fireDelay: 1.5,
           bulletSpeed: 600,
           sprite: "assets/soldier5.png",
+        },
+      },
+      characters: {
+        player_default: {
+          name: "Soldado",
+          cost: 0,
+        },
+        lava_mage: {
+          name: "Mago da Lava",
+          cost: 5000,
+        },
+      },
+      gameModes: {
+        survival: {
+          name: "Sobrevivência",
+          cost: 0,
+        },
+        boss_rush: {
+          name: "Boss Rush",
+          cost: 65,
+          victoryReward: 30,
         },
       },
     },
@@ -125,10 +146,15 @@
     score: 0,
     kills: 0,
     lastBossKillMark: 0,
+    mode: "survival",
+    bossRush: null,
+    victory: false,
+    bossRushReward: 0,
   };
 
   const input = {
     keys: {},
+    justPressed: {},
     mouse: {
       x: canvas.width / 2,
       y: canvas.height / 2,
@@ -217,9 +243,12 @@
   window.addEventListener("resize", resizeCanvas);
   window.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
+    if (!input.keys[key]) input.justPressed[key] = true;
     input.keys[key] = true;
     if (key === " " || key === "spacebar" || key === "space") {
+      if (!input.keys.space) input.justPressed.space = true;
       input.keys.space = true;
+      event.preventDefault();
     }
   });
   window.addEventListener("keyup", (event) => {
@@ -227,6 +256,7 @@
     input.keys[key] = false;
     if (key === " " || key === "spacebar" || key === "space") {
       input.keys.space = false;
+      event.preventDefault();
     }
   });
   window.addEventListener("mousemove", updateMouse);

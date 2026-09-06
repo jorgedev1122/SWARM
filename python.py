@@ -20,6 +20,7 @@ DEFAULT_PROFILE = {
     },
     "weapons": ["default"],
     "equipped_weapon": "default",
+    "modes_unlocked": ["survival"],
 }
 
 
@@ -86,6 +87,9 @@ def get_player_entry(scores, player):
         },
         "weapons": sorted(set(["default", *[str(weapon) for weapon in weapons]])),
         "equipped_weapon": str(profile.get("equipped_weapon", "default")),
+        "modes_unlocked": sorted(
+            set(["survival", *[str(mode) for mode in profile.get("modes_unlocked", [])]])
+        ),
     }
 
     if clean_profile["equipped_weapon"] not in clean_profile["weapons"]:
@@ -193,7 +197,7 @@ class SwarmHandler(SimpleHTTPRequestHandler):
             saved = True
 
         # Adicionar moedas ganhas na partida
-        earned_coins = int(max(0, run["score"]) / 100) * 3
+        earned_coins = int(max(0, run["score"]) / 50) * 3
         entry["profile"]["coins"] = max(0, entry["profile"]["coins"] + earned_coins)
 
         save_scores(scores)

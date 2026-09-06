@@ -24,6 +24,30 @@
     const directionX = Math.cos(angle);
     const directionY = Math.sin(angle);
     cooldown = weapon.fireDelay;
+    const damageMultiplier = window.SWARM.playerSystem.getDamageMultiplier
+      ? window.SWARM.playerSystem.getDamageMultiplier()
+      : 1;
+
+    // Lava Mage replaces every equipped weapon projectile with a lava bolt.
+    // The bolt keeps the weapon cadence while applying the class multiplier.
+    if (window.SWARM.playerSystem.isLavaMage?.()) {
+      const muzzleDistance = Math.max(player.width, player.height) * 0.38;
+      bullets.push({
+        type: "lava",
+        x: center.x + directionX * muzzleDistance - 12,
+        y: center.y + directionY * muzzleDistance - 12,
+        width: 24,
+        height: 24,
+        dx: directionX,
+        dy: directionY,
+        speed: Math.max(560, Number(weapon.bulletSpeed || 0) * 0.9),
+        angle,
+        damage: Number(weapon.damage || 1) * damageMultiplier,
+        burnDuration: 2,
+        life: 1.65,
+      });
+      return;
+    }
 
     if (weapon.melee) {
       const reach = 78;
@@ -34,7 +58,7 @@
         width: 90,
         height: 90,
         angle,
-        damage: weapon.damage,
+        damage: weapon.damage * damageMultiplier,
         life: 0.08,
         hit: new Set(),
       });
@@ -65,7 +89,7 @@
       dy: directionY,
       speed: weapon.bulletSpeed,
       angle,
-      damage: weapon.damage,
+      damage: weapon.damage * damageMultiplier,
       life: isArcher ? 1.35 : isBazooka ? 2 : 1.8,
     });
   }
@@ -77,7 +101,7 @@
       const bullet = bullets[index];
       bullet.life -= dt;
 
-      if (bullet.type === "bullet") {
+      if (bullet.type === "bullet" || bullet.type === "lava") {
         bullet.x += bullet.dx * bullet.speed * dt;
         bullet.y += bullet.dy * bullet.speed * dt;
       }
@@ -113,6 +137,34 @@
         window.SWARM.ctx.beginPath();
         window.SWARM.ctx.arc(0, 0, bullet.width / 2, -0.75, 0.75);
         window.SWARM.ctx.stroke();
+        window.SWARM.ctx.restore();
+        return;
+      }
+
+      if (bullet.type === "lava") {
+        const centerX = bullet.x + bullet.width / 2;
+        const centerY = bullet.y + bullet.height / 2;
+        const radius = bullet.width * 0.7;
+        const gradient = window.SWARM.ctx.createRadialGradient(
+          centerX - bullet.dx * 5,
+          centerY - bullet.dy * 5,
+          1,
+          centerX,
+          centerY,
+          radius,
+        );
+        gradient.addColorStop(0, "#fff7bf");
+        gradient.addColorStop(0.35, "#ffd135");
+        gradient.addColorStop(0.72, "#fa5a17");
+        gradient.addColorStop(1, "rgba(162, 25, 8, 0)");
+
+        window.SWARM.ctx.save();
+        window.SWARM.ctx.shadowColor = "#ff631d";
+        window.SWARM.ctx.shadowBlur = 18;
+        window.SWARM.ctx.fillStyle = gradient;
+        window.SWARM.ctx.beginPath();
+        window.SWARM.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        window.SWARM.ctx.fill();
         window.SWARM.ctx.restore();
         return;
       }
