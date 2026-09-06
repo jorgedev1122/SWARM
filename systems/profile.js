@@ -152,19 +152,25 @@
     async saveRun() {
       const player = playerName();
       const currentLevel = window.SWARM.progression.level;
-      const earnedCoins = Math.floor(window.SWARM.state.score / 100) * 3;
+      const earnedCoins = Math.floor(window.SWARM.state.score / 55) * 5;
       const bossRushReward = Number(window.SWARM.state.bossRushReward || 0);
+      const normalBossReward = Number(window.SWARM.state.normalBossReward || 0);
+      const luck = Number(this.data.upgrades?.luck || 0);
+      const luckBonus = Math.random() * 100 < luck ? 8 : 0;
+      const totalReward =
+        earnedCoins + bossRushReward + normalBossReward + luckBonus;
 
       if (window.DEBUG_PROFILE) {
         console.log("=== SALVANDO PARTIDA ===");
         console.log("Jogador:", player);
         console.log("Score:", window.SWARM.state.score);
-        console.log("Moedas a ganhar:", earnedCoins);
+        console.log("Moedas por pontuação:", earnedCoins);
+        console.log("Bônus de sorte:", luckBonus);
         console.log("Level alcançado:", currentLevel);
         console.log("Moedas antes:", this.data.coins);
       }
 
-      this.data.coins += earnedCoins + bossRushReward;
+      this.data.coins += totalReward;
       this.data.level = Math.max(this.data.level, currentLevel);
 
       if (window.DEBUG_PROFILE) {

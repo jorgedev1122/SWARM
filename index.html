@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWARM</title>
     <link rel="stylesheet" href="style.css" />
-        <style>
+    <style>
       .mode-selector-overlay {
         position: fixed;
         inset: 0;
@@ -112,8 +112,8 @@
       }
     </style>
   </head>
-    <audio id="bgMusic" loop>
-      <source src="assets/background-music.mp3" type="audio/mpeg" />
+  <audio id="bgMusic" loop>
+    <source src="assets/background-music.mp3" type="audio/mpeg" />
   </audio>
   <body>
     <div id="welcome-screen">
@@ -151,17 +151,22 @@
 
     <div id="mode-selector" class="mode-selector-overlay">
       <div class="mode-selector-box">
-      <h2>Escolha o modo de jogo</h2>
+        <h2>Escolha o modo de jogo</h2>
 
-      <div class="mode-options">
-        <button class="mode-card" data-mode="survival" type="button">
-        <span class="mode-icon">🌊</span>
-        <strong>Sobrevivência</strong>
-          <small>Enfrente ondas infinitas de inimigos e colete moedas.</small>
-          <em>Desbloqueado</em>
-        </button>
+        <div class="mode-options">
+          <button class="mode-card" data-mode="survival" type="button">
+            <span class="mode-icon">🌊</span>
+            <strong>Sobrevivência</strong>
+            <small>Enfrente ondas infinitas de inimigos e colete moedas.</small>
+            <em>Desbloqueado</em>
+          </button>
 
-      <button class="mode-card" data-mode="boss_rush" type="button" id="boss-rush-btn">
+          <button
+            class="mode-card"
+            data-mode="boss_rush"
+            type="button"
+            id="boss-rush-btn"
+          >
             <span class="mode-icon">👹</span>
             <strong>Boss Rush</strong>
             <small>5 bosses seguidos</small>
@@ -169,9 +174,11 @@
           </button>
         </div>
 
-        <button id="mode-cancel-btn" class="secondary-btn" type="button">Cancelar</button>
+        <button id="mode-cancel-btn" class="secondary-btn" type="button">
+          Cancelar
+        </button>
       </div>
-    </div>        
+    </div>
 
     <div id="menu">
       <div class="main-menu">
@@ -253,7 +260,7 @@
             </button>
           </div>
 
-          <h3>Armas</h3>
+          <h3>Personagens</h3>
 
           <div class="weapon-grid">
             <button class="weapon-card" data-weapon="default" type="button">
@@ -265,100 +272,125 @@
             <button class="weapon-card" data-weapon="pistol" type="button">
               <img src="assets/soldier2.gif" alt="" />
               <strong>Certeiro</strong>
-              <small>5 moedas | dano 3</small>
+              <small>12 moedas | dano 4</small>
             </button>
 
             <button class="weapon-card" data-weapon="rifle" type="button">
               <img src="assets/soldier3.png" alt="" />
               <strong>Executor</strong>
-              <small>10 moedas | dano 8</small>
+              <small>28 moedas | dano 12</small>
             </button>
 
             <button class="weapon-card" data-weapon="archer" type="button">
               <img src="assets/archer.png" alt="" />
               <strong>Arqueiro</strong>
-              <small>15 moedas | dano 10</small>
+              <small>24 moedas | dano 10</small>
             </button>
 
             <button class="weapon-card" data-weapon="knife" type="button">
               <img src="assets/soldier4.png" alt="" />
               <strong>Ceifador</strong>
-              <small>20 moedas | dano 20</small>
+              <small>40 moedas | dano 18</small>
             </button>
 
             <button class="weapon-card" data-weapon="bazooka" type="button">
               <img src="assets/soldier5.png" alt="" />
               <strong>Lançador</strong>
-              <small>30 moedas | dano 50</small>
+              <small>60 moedas | dano 65</small>
             </button>
-          
+
+            <button class="weapon-card" data-weapon="Lava" type="button">
+              <img src="assets/soldier6.png" alt="" />
+              <strong>🔒 🔒 🔒 🔒 🔒 🔒 🔒</strong>
+              <small>?? moedas | dano ???</small>
+            </button>
+          </div>
 
           <p id="shop-message" class="shop-message">
-            Ganhe 3 moedas a cada 100 pontos no fim da partida.
+            Ganhe 5 moedas a cada 55 pontos - A sorte pode render até 8 moedas
+            extras.
           </p>
         </section>
 
         <section class="menu-panel project-panel">
-          <div class="project-visual">
-            <img src="assets/zombie.png" alt="" class="zombie-preview" />
-            <img src="assets/bullet.webp" alt="" class="bullet-preview" />
-            <span class="impact-burst" aria-hidden="true"></span>
-          </div>
-
-          <div class="project-copy">
-            <span class="eyebrow">projeto destaque</span>
-            <h2>Combate rapido, ondas infinitas e boss progressivo.</h2>
-            <p>
-              "Eles já estão mortos, você só vai dar o
-              <strong>descanso final.</strong>
-            </p>
-          </div>
-
-          <div class="more-projects">
-            <h3>Links</h3>
-
-            <div class="project-links">
-              <a
-                href="https://jorgedev1122.github.io/Portifolio/"
-                target="_blank"
-                class="project-card"
-              >
-                <span>Portfolio</span>
-              </a>
-
-              <a
-                href="https://www.instagram.com/j0rge.2211/"
-                target="_blank"
-                class="project-card"
-              >
-                <span>Instagram</span>
-              </a>
-
-              <a
-                href="https://jorgedev1122.github.io/Iron-Fist/"
-                target="_blank"
-                class="project-card"
-              >
-                <span>Projeto destaque 1</span>
-              </a>
-
-              <a
-                href="https://jorgedev1122.github.io/SK8HUB/"
-                target="_blank"
-                class="project-card"
-              >
-                <span>Projeto destaque 2</span>
-              </a>
-
-              <a
-                href="https://github.com/jorgedev1122"
-                target="_blank"
-                class="project-card"
-              >
-                <span>GitHub</span>
-              </a>
+          <div class="updates-heading">
+            <div>
+              <span class="eyebrow">central de informações</span>
+              <h2>Atualizações do SWARM</h2>
             </div>
+            <span class="updates-signal" aria-label="Atualizações recentes"
+              >● ao vivo</span
+            >
           </div>
+
+          <div class="updates-feed" aria-label="Resumo das atualizações">
+            <article class="update-item update-item-hot">
+              <span class="update-mark">🔥</span>
+              <div>
+                <strong>Novo Boss Rush</strong>
+                <p>Enfrente bosses de arena com ataques especiais.</p>
+              </div>
+              <small>agora</small>
+            </article>
+            <article class="update-item">
+              <span class="update-mark">⚔</span>
+              <div>
+                <strong>Sistema de combate</strong>
+                <p>Novos padrões, armas e upgrades para testar.</p>
+              </div>
+              <small>v1.4</small>
+            </article>
+            <article class="update-item update-item-dev">
+              <span class="update-mark">◈</span>
+              <div>
+                <strong>Em desenvolvimento</strong>
+                <p>Novos bosses e conteúdos estão em produção.</p>
+              </div>
+              <small>breve</small>
+            </article>
+          </div>
+
+          <p class="updates-tagline">
+            Sobreviva a ondas, colete moedas e derrube o boss.
+          </p>
+
+          <nav
+            class="project-links right-actions"
+            aria-label="Informações do SWARM"
+          >
+            <a
+              href="https://jorgedev1122.github.io/Portifolio/"
+              target="_blank"
+              class="project-card tutorial-target"
+              data-tutorial="portfolio"
+            >
+              <span>Portfólio</span>
+            </a>
+            <button
+              class="project-card"
+              id="updates-btn"
+              type="button"
+              data-tutorial="updates"
+            >
+              <span>Atualizações</span>
+            </button>
+            <button
+              class="project-card"
+              id="tutorial-btn"
+              type="button"
+              data-tutorial="tutorial"
+            >
+              <span>Tutorial</span>
+            </button>
+            <button
+              class="project-card"
+              id="credits-btn"
+              type="button"
+              data-tutorial="credits"
+            >
+              <span>Créditos</span>
+            </button>
+          </nav>
         </section>
 
         <footer id="credits" class="menu-footer">
@@ -368,6 +400,154 @@
           </a>
         </footer>
       </div>
+    </div>
+
+    <div id="updates-modal" class="swarm-modal" aria-hidden="true">
+      <div
+        class="swarm-modal-box updates-modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="updates-title"
+      >
+        <button
+          class="modal-close"
+          type="button"
+          data-close-modal="updates-modal"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+        <span class="eyebrow">registro de operações</span>
+        <h2 id="updates-title">Atualizações</h2>
+        <div class="updates-sections">
+          <section>
+            <div class="section-ribbon">Adicionado</div>
+            <article
+              class="release-card"
+              data-status="adicionado"
+              data-version="1.4"
+              data-date="6 de setembro de 2026"
+            >
+              <div class="release-meta">
+                <strong>Atualização 1.4</strong
+                ><span>6 de setembro de 2026</span>
+              </div>
+              <h3>🔥 Boss Rush</h3>
+              <p>Uma arena dedicada para testar seus reflexos contra o boss.</p>
+              <img src="assets/BOSS1.png" alt="Boss do SWARM" />
+            </article>
+            <article
+              class="release-card"
+              data-status="adicionado"
+              data-version="1.4"
+            >
+              <div class="release-meta">
+                <strong>⚔ Sistema de combate</strong><span>v1.4</span>
+              </div>
+              <p>
+                Armas, carros, barris explosivos e ataques especiais agora fazem
+                parte da batalha.
+              </p>
+              <img src="assets/car.png" alt="Projétil do SWARM" />
+            </article>
+          </section>
+          <section>
+            <div class="section-ribbon section-ribbon-dev">
+              Em desenvolvimento
+            </div>
+            <article
+              class="release-card release-card-dev"
+              data-status="desenvolvimento"
+            >
+              <div class="release-meta">
+                <strong>🔥 Novos bosses</strong><span>em produção</span>
+              </div>
+              <p>Novas ameaças e arenas para expandir o universo do SWARM.</p>
+              <img
+                src="assets/BOSS2.gif"
+                alt="Próximo boss em desenvolvimento"
+              />
+            </article>
+            <article
+              class="release-card release-card-dev"
+              data-status="desenvolvimento"
+            >
+              <div class="release-meta">
+                <strong>✦ Novos ataques</strong><span>em produção</span>
+              </div>
+              <p>
+                Padrões mais complexos para fazer cada luta parecer diferente.
+              </p>
+            </article>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div id="credits-modal" class="swarm-modal" aria-hidden="true">
+      <div
+        class="swarm-modal-box compact-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="credits-title"
+      >
+        <button
+          class="modal-close"
+          type="button"
+          data-close-modal="credits-modal"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+        <span class="eyebrow">equipe do projeto</span>
+        <h2 style="margin-bottom: 16px" id="credits-title">Créditos</h2>
+        <h3>Desenvolvimento - Jorge Enrique</h3>
+        <p style="margin-bottom: 16px">
+          Desenvolvedor e designer do SWARM. Responsável por toda a programação.
+        </p>
+        <h3>Referências e feedback - Guilherme</h3>
+        <p>
+          Designer e consultor do projeto. Responsável por fornecer referências
+          visuais e feedbacks de jogabilidade.
+        </p>
+        <p class="modal-muted">
+          Obrigado por jogar e acompanhar a evolução do projeto.
+        </p>
+        <a
+          class="modal-link"
+          href="https://www.instagram.com/j0rge.2211/"
+          target="_blank"
+          >Instagram do desenvolvedor 1</a
+        >
+        <a
+          class="modal-link"
+          href="https://www.instagram.com/umcara.jpeg/"
+          target="_blank"
+          >Instagram do desenvolvedor 2</a
+        >
+      </div>
+    </div>
+
+    <div id="tutorial-overlay" class="tutorial-overlay" aria-hidden="true">
+      <div class="tutorial-shade"></div>
+      <div
+        id="tutorial-dialog"
+        class="tutorial-dialog"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="tutorial-portrait">
+          <img src="assets/miniorc.png" alt="Guia do SWARM" />
+        </div>
+        <div class="tutorial-dialog-top">
+          <span>SWARM // GUIA</span><strong id="tutorial-step">1 / 7</strong>
+        </div>
+        <p id="tutorial-text"></p>
+        <button id="tutorial-next" type="button">PRÓXIMO</button>
+      </div>
+      <span id="tutorial-pointer" class="tutorial-pointer" aria-hidden="true"
+        >▼</span
+      >
     </div>
 
     <div id="game-over">

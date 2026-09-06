@@ -36,6 +36,7 @@
     },
     boss: {
       killInterval: 35,
+      normalReward: 20,
     },
     player: {
       width: 70,
@@ -76,40 +77,40 @@
         },
         pistol: {
           name: "Aguia",
-          cost: 6,
-          damage: 3,
+          cost: 12,
+          damage: 4,
           fireDelay: 0.22,
           bulletSpeed: 760,
           sprite: "assets/soldier2.gif",
         },
         rifle: {
           name: "Executor",
-          cost: 15,
-          damage: 10,
+          cost: 28,
+          damage: 12,
           fireDelay: 0.34,
           bulletSpeed: 820,
           sprite: "assets/soldier3.png",
         },
         archer: {
           name: "Arqueiro",
-          cost: 20,
-          damage: 8,
+          cost: 24,
+          damage: 10,
           fireDelay: 0.5,
           bulletSpeed: 900,
           sprite: "assets/archer.png",
         },
         knife: {
           name: "Ceifador",
-          cost: 25,
-          damage: 10,
-          fireDelay: 0.05,
+          cost: 40,
+          damage: 18,
+          fireDelay: 0.08,
           melee: true,
           sprite: "assets/soldier4.png",
         },
         bazooka: {
           name: "Lançador",
-          cost: 30,
-          damage: 50,
+          cost: 60,
+          damage: 65,
           fireDelay: 1.5,
           bulletSpeed: 600,
           sprite: "assets/soldier5.png",
@@ -133,7 +134,7 @@
         boss_rush: {
           name: "Boss Rush",
           cost: 65,
-          victoryReward: 30,
+          victoryReward: 45,
         },
       },
     },
@@ -150,6 +151,7 @@
     bossRush: null,
     victory: false,
     bossRushReward: 0,
+    normalBossReward: 0,
   };
 
   const input = {

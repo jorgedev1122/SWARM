@@ -196,10 +196,7 @@ class SwarmHandler(SimpleHTTPRequestHandler):
             entry["record"] = run
             saved = True
 
-        # Adicionar moedas ganhas na partida
-        earned_coins = int(max(0, run["score"]) / 50) * 3
-        entry["profile"]["coins"] = max(0, entry["profile"]["coins"] + earned_coins)
-
+        # A recompensa da partida ja foi calculada e salva pelo cliente.
         save_scores(scores)
 
         self.send_json({

@@ -77,6 +77,202 @@
     if (modeSelector) modeSelector.classList.remove("open");
   }
 
+  const tutorialSteps = [
+    {
+      selector: "#player-name",
+      text: "Esse é o seu nome. Ele será usado para identificar seu progresso.",
+    },
+    {
+      selector: ".wallet-row",
+      text: "Aqui ficam suas moedas. Você pode usá-las para comprar melhorias e armas.",
+    },
+    {
+      selector: "#shop-toggle",
+      text: "Abra a loja para cuidar da sua progressão. Vamos olhar cada parte dela.",
+    },
+    {
+      selector: ".upgrade-grid",
+      text: "Estes são os upgrades. Melhore velocidade, vida e sorte usando suas moedas.",
+    },
+    {
+      selector: ".character-grid",
+      text: "Aqui ficam os personagens. Cada um pode trazer uma forma diferente de jogar.",
+    },
+    {
+      selector: ".weapon-grid",
+      text: "Aqui você escolhe sua arma. Cada uma muda o ritmo e o alcance do combate.",
+    },
+    {
+      selector: "#play-btn",
+      text: "Esse é o botão principal. Clique nele quando quiser começar uma partida.",
+    },
+    {
+      selector: "#updates-btn",
+      text: "Aqui você acompanha tudo que está sendo adicionado ao SWARM.",
+    },
+    {
+      selector: "#tutorial-btn",
+      text: "Você está aqui agora. Pode voltar a este guia sempre que precisar.",
+    },
+    {
+      selector: ".tutorial-target",
+      text: "Quer conhecer outros projetos do desenvolvedor? O portfólio está aqui.",
+    },
+  ];
+
+  let tutorialIndex = 0;
+
+  function setModalState(id, open) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.toggle("open", open);
+    modal.setAttribute("aria-hidden", String(!open));
+  }
+
+  function bindModalControls() {
+    document.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setModalState(button.dataset.closeModal, false);
+      });
+    });
+
+    document.querySelectorAll(".swarm-modal").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) setModalState(modal.id, false);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      document.querySelectorAll(".swarm-modal.open").forEach((modal) => {
+        setModalState(modal.id, false);
+      });
+      if (
+        document.getElementById("tutorial-overlay")?.classList.contains("open")
+      ) {
+        finishTutorial();
+      }
+    });
+  }
+
+  function positionTutorialDialog(target) {
+    const dialog = document.getElementById("tutorial-dialog");
+    if (!dialog) return;
+    const rect = target?.getBoundingClientRect();
+    const width = Math.min(390, window.innerWidth - 28);
+    let left = (window.innerWidth - width) / 2;
+    let top = window.innerHeight - 190;
+
+    if (rect && window.innerWidth > 760) {
+      left = Math.min(window.innerWidth - width - 14, Math.max(14, rect.left));
+      top = rect.bottom + 18;
+      if (top + 190 > window.innerHeight - 14)
+        top = Math.max(14, rect.top - 205);
+    }
+
+    dialog.style.width = `${width}px`;
+    dialog.style.left = `${left}px`;
+    dialog.style.top = `${top}px`;
+
+    const pointer = document.getElementById("tutorial-pointer");
+    if (!pointer || !rect || window.innerWidth <= 760) return;
+    const dialogRect = dialog.getBoundingClientRect();
+    pointer.style.display = "block";
+    pointer.style.left = `${Math.max(12, Math.min(window.innerWidth - 30, rect.left + rect.width / 2 - 12))}px`;
+    if (dialogRect.bottom <= rect.top) {
+      pointer.textContent = "▼";
+      pointer.style.top = `${rect.top - 30}px`;
+    } else {
+      pointer.textContent = "▲";
+      pointer.style.top = `${rect.bottom + 8}px`;
+    }
+  }
+
+  function prepareTutorialStep() {
+    const shouldShowShop = tutorialIndex >= 3 && tutorialIndex <= 5;
+    if (shouldShowShop) {
+      dom.shopPanel?.classList.add("open");
+      dom.mainMenu?.classList.add("shop-mode");
+    } else {
+      dom.shopPanel?.classList.remove("open");
+      dom.mainMenu?.classList.remove("shop-mode");
+    }
+  }
+
+  function renderTutorialStep() {
+    const overlay = document.getElementById("tutorial-overlay");
+    const text = document.getElementById("tutorial-text");
+    const step = document.getElementById("tutorial-step");
+    const button = document.getElementById("tutorial-next");
+    if (!overlay || !text || !step || !button) return;
+
+    document.querySelectorAll(".tutorial-focus").forEach((element) => {
+      element.classList.remove("tutorial-focus");
+    });
+
+    prepareTutorialStep();
+    const current = tutorialSteps[tutorialIndex];
+    const target = document.querySelector(current.selector);
+    target?.classList.add("tutorial-focus");
+    text.textContent = current.text;
+    step.textContent = `${tutorialIndex + 1} / ${tutorialSteps.length}`;
+    button.textContent =
+      tutorialIndex === tutorialSteps.length - 1 ? "FINALIZAR" : "PRÓXIMO";
+    positionTutorialDialog(target);
+  }
+
+  function startTutorial() {
+    tutorialIndex = 0;
+    const overlay = document.getElementById("tutorial-overlay");
+    if (!overlay) return;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    renderTutorialStep();
+  }
+
+  function finishTutorial() {
+    document.getElementById("tutorial-overlay")?.classList.remove("open");
+    document
+      .getElementById("tutorial-overlay")
+      ?.setAttribute("aria-hidden", "true");
+    document.querySelectorAll(".tutorial-focus").forEach((element) => {
+      element.classList.remove("tutorial-focus");
+    });
+    document
+      .getElementById("tutorial-pointer")
+      ?.style.setProperty("display", "none");
+    dom.shopPanel?.classList.remove("open");
+    dom.mainMenu?.classList.remove("shop-mode");
+  }
+
+  function bindInformationDesk() {
+    document.getElementById("updates-btn")?.addEventListener("click", () => {
+      setModalState("updates-modal", true);
+    });
+    document.getElementById("credits-btn")?.addEventListener("click", () => {
+      setModalState("credits-modal", true);
+    });
+    document
+      .getElementById("tutorial-btn")
+      ?.addEventListener("click", startTutorial);
+    document.getElementById("tutorial-next")?.addEventListener("click", () => {
+      if (tutorialIndex >= tutorialSteps.length - 1) {
+        finishTutorial();
+        return;
+      }
+      tutorialIndex += 1;
+      renderTutorialStep();
+    });
+    window.addEventListener("resize", () => {
+      if (
+        !document.getElementById("tutorial-overlay")?.classList.contains("open")
+      )
+        return;
+      positionTutorialDialog(document.querySelector(".tutorial-focus"));
+    });
+    bindModalControls();
+  }
+
   async function consumeBossRushEntry() {
     const profile = window.SWARM.profile.data;
     const bossRush = config.profile.gameModes.boss_rush;
@@ -174,6 +370,8 @@
     if (modeCancelBtn) {
       modeCancelBtn.addEventListener("click", hideModeSelector);
     }
+
+    bindInformationDesk();
   }
 
   function drawHud() {

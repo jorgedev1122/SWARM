@@ -1066,6 +1066,511 @@ button {
 }
 
 /* =========================
+   SWARM INFORMATION DESK
+========================= */
+
+.project-panel {
+  grid-template-rows: auto auto auto 1fr;
+  min-height: 0;
+  padding: 16px;
+}
+
+.updates-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.updates-heading h2 {
+  color: #fff;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1;
+}
+
+.updates-signal {
+  color: #e2b65f;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.updates-signal::first-letter {
+  color: #e34b3e;
+}
+
+.updates-feed {
+  display: grid;
+  gap: 7px;
+}
+
+.update-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  min-width: 0;
+  padding: 9px 10px;
+  border-left: 2px solid rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.update-item-hot {
+  border-left-color: #e34b3e;
+  background: rgba(227, 75, 62, 0.08);
+}
+
+.update-item-dev {
+  border-left-color: #e2b65f;
+}
+
+.update-mark {
+  color: #e2b65f;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.update-item strong {
+  display: block;
+  color: #fff;
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.update-item p {
+  margin-top: 3px;
+  color: rgba(244, 241, 234, 0.65);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.update-item small {
+  color: rgba(244, 241, 234, 0.45);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.updates-tagline {
+  padding: 9px 10px;
+  color: rgba(244, 241, 234, 0.72);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.74rem;
+  font-style: italic;
+}
+
+.right-actions {
+  align-self: end;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.right-actions .project-card {
+  min-height: 42px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.right-actions .project-card:hover {
+  border-color: rgba(226, 182, 95, 0.65);
+  background: rgba(226, 182, 95, 0.1);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.right-actions .project-card:nth-child(5) {
+  grid-column: auto;
+}
+
+.swarm-modal,
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 5vw;
+  background: rgba(3, 4, 4, 0.86);
+  backdrop-filter: blur(6px);
+}
+
+.swarm-modal.open,
+.tutorial-overlay.open {
+  display: flex;
+  animation: menuFadeIn 180ms ease-out both;
+}
+
+.swarm-modal-box {
+  position: relative;
+  width: min(920px, 90vw);
+  max-height: 90vh;
+  overflow: auto;
+  padding: clamp(20px, 4vw, 42px);
+  color: #f4f1ea;
+  border: 2px solid rgba(226, 182, 95, 0.56);
+  border-radius: 8px;
+  background: linear-gradient(
+    180deg,
+    rgba(35, 34, 31, 0.98),
+    rgba(12, 13, 13, 0.98)
+  );
+  box-shadow:
+    0 24px 90px rgba(0, 0, 0, 0.72),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.035);
+}
+
+.swarm-modal-box h2 {
+  color: #fff;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  text-transform: uppercase;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  color: #f4f1ea;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.updates-sections {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.section-ribbon {
+  margin-bottom: 10px;
+  color: #e2b65f;
+  border-bottom: 1px solid rgba(226, 182, 95, 0.35);
+  padding-bottom: 7px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.section-ribbon-dev {
+  color: #f08b63;
+  border-color: rgba(240, 139, 99, 0.35);
+}
+
+.release-card {
+  display: grid;
+  gap: 9px;
+  margin-top: 9px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.release-card-dev {
+  border-style: dashed;
+}
+
+.release-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: rgba(244, 241, 234, 0.58);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.release-meta strong,
+.release-card h3 {
+  color: #fff;
+}
+
+.release-card p {
+  color: rgba(244, 241, 234, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.release-card img {
+  width: min(100%, 360px);
+  max-height: 180px;
+  object-fit: contain;
+  justify-self: center;
+  opacity: 0.9;
+}
+
+.compact-modal {
+  width: min(460px, 90vw);
+}
+
+.compact-modal p {
+  margin-top: 16px;
+  color: rgba(244, 241, 234, 0.75);
+  line-height: 1.45;
+}
+
+.modal-muted {
+  color: rgba(244, 241, 234, 0.48) !important;
+  font-size: 0.85rem;
+}
+
+.modal-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: #e2b65f;
+  font-weight: 800;
+}
+
+.tutorial-overlay {
+  z-index: 2500;
+  align-items: initial;
+  justify-content: initial;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.tutorial-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.tutorial-target.tutorial-focus,
+[data-tutorial].tutorial-focus {
+  position: relative;
+  z-index: 2502;
+  border-color: #e2b65f !important;
+  box-shadow:
+    0 0 0 4px rgba(226, 182, 95, 0.22),
+    0 0 28px rgba(226, 182, 95, 0.55) !important;
+}
+
+.tutorial-dialog {
+  position: absolute;
+  z-index: 2503;
+  width: min(500px, calc(100vw - 28px));
+  min-height: 164px;
+  padding: 20px 20px 16px 112px;
+  color: #f7f3ec;
+  border: 3px solid #e2b65f;
+  border-radius: 3px;
+  background: #1d1716;
+  box-shadow:
+    7px 7px 0 rgba(0, 0, 0, 0.55),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.08);
+  animation: tutorialDialogIn 220ms ease-out both;
+}
+
+.tutorial-dialog::before {
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  width: 14px;
+  height: 14px;
+  content: "";
+  background: #1d1716;
+  border-top: 3px solid #e2b65f;
+  border-left: 3px solid #e2b65f;
+  transform: rotate(45deg);
+}
+
+.tutorial-dialog::after {
+  position: absolute;
+  inset: 5px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.tutorial-portrait {
+  position: absolute;
+  left: -3px;
+  bottom: -3px;
+  z-index: 1;
+  display: grid;
+  place-items: end center;
+  width: 104px;
+  height: 148px;
+  overflow: hidden;
+  border: 3px solid #e2b65f;
+  background: #080808;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.tutorial-portrait img {
+  width: 94px;
+  height: 118px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 9px rgba(226, 182, 95, 0.38));
+}
+
+.tutorial-pointer {
+  position: absolute;
+  z-index: 2504;
+  display: none;
+  color: #e2b65f;
+  font-size: 1.8rem;
+  line-height: 1;
+  text-shadow:
+    0 2px 0 #171717,
+    0 0 12px rgba(226, 182, 95, 0.8);
+  animation: tutorialPointerPulse 900ms ease-in-out infinite;
+}
+
+.tutorial-dialog-top,
+.tutorial-dialog p,
+#tutorial-next {
+  position: relative;
+  z-index: 1;
+}
+
+.tutorial-dialog-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #e2b65f;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.tutorial-dialog p {
+  min-height: 76px;
+  margin: 17px 0;
+  color: #fff;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+#tutorial-next {
+  width: 100%;
+  min-height: 38px;
+  color: #171717;
+  background: #e2b65f;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.character-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 7px;
+  color: #f4f1ea;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.035);
+  cursor: pointer;
+  font: inherit;
+}
+
+.character-card:hover,
+.character-card.equipped {
+  border-color: rgba(226, 182, 95, 0.65);
+  background: rgba(226, 182, 95, 0.1);
+}
+
+.character-card img {
+  grid-row: 1 / -1;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.character-card strong {
+  color: #fff;
+  font-size: 0.7rem;
+}
+.character-card small {
+  color: rgba(244, 241, 234, 0.58);
+  font-size: 0.6rem;
+}
+
+@keyframes tutorialDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tutorialPointerPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 760px) {
+  .project-panel {
+    gap: 8px;
+    padding: 12px;
+  }
+  .update-item p {
+    font-size: 0.68rem;
+  }
+  .updates-sections {
+    gap: 16px;
+  }
+  .swarm-modal {
+    padding: 12px;
+  }
+  .swarm-modal-box {
+    width: 100%;
+    max-height: 94vh;
+    padding: 24px 14px 16px;
+  }
+  .tutorial-dialog {
+    bottom: 14px !important;
+    left: 14px !important;
+    top: auto !important;
+    width: calc(100vw - 28px) !important;
+    padding-left: 88px;
+  }
+  .tutorial-portrait {
+    width: 82px;
+    height: 118px;
+  }
+  .tutorial-portrait img {
+    width: 74px;
+    height: 92px;
+  }
+  .character-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
    ANIMATIONS
 ========================= */
 
@@ -1097,6 +1602,8 @@ button {
   100% {
     transform: translateX(0) rotate(-8deg);
   }
+  width: calc(100vw - 28px) !important;
+  padding-left: 88px;
 
   50% {
     transform: translateX(-20px) rotate(-8deg);

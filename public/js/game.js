@@ -116,6 +116,7 @@
       systems.state.bossRush = null;
       systems.state.victory = false;
       systems.state.bossRushReward = 0;
+      systems.state.normalBossReward = 0;
       this.rushIntermission = 0;
 
       systems.playerSystem.reset(systems.profile.data);
