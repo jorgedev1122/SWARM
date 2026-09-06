@@ -109,7 +109,7 @@
         bazooka: {
           name: "Lançador",
           cost: 30,
-          damage: 300,
+          damage: 50,
           fireDelay: 1.5,
           bulletSpeed: 600,
           sprite: "assets/soldier5.png",
