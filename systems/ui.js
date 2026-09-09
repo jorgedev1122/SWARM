@@ -245,6 +245,19 @@
     dom.mainMenu?.classList.remove("shop-mode");
   }
 
+  function showBossDialogue() {
+    const overlay = document.getElementById("boss-dialog-overlay");
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    void overlay.offsetWidth;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    window.setTimeout(() => {
+      overlay.classList.remove("open");
+      overlay.setAttribute("aria-hidden", "true");
+    }, 2600);
+  }
+
   function bindInformationDesk() {
     document.getElementById("updates-btn")?.addEventListener("click", () => {
       setModalState("updates-modal", true);
@@ -495,5 +508,6 @@
     showGameOver,
     updateRecord,
     drawHud,
+    showBossDialogue,
   };
 })();

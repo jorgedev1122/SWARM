@@ -215,7 +215,6 @@ body.boss-stage.boss-fury canvas {
   bottom: 6vh;
   width: 118px;
   height: 118px;
-  background: url("assets/zombie.png") center / contain no-repeat;
   animation: floatThreat 5s ease-in-out infinite;
 }
 
@@ -1371,6 +1370,91 @@ button {
   animation: tutorialDialogIn 220ms ease-out both;
 }
 
+.boss-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2600;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 14px 9vh;
+  pointer-events: none;
+}
+
+.boss-dialog-overlay.open {
+  display: flex;
+}
+
+.boss-dialog {
+  position: relative;
+  width: min(500px, calc(100vw - 28px));
+  min-height: 138px;
+  padding: 20px 20px 16px 112px;
+  color: #f7f3ec;
+  border: 3px solid #ff4fd8;
+  border-radius: 3px;
+  background: #24121f;
+  box-shadow:
+    7px 7px 0 rgba(0, 0, 0, 0.55),
+    0 0 28px rgba(255, 79, 216, 0.45),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.08);
+  animation: tutorialDialogIn 220ms ease-out both;
+}
+
+.boss-dialog::after {
+  position: absolute;
+  inset: 5px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.boss-portrait {
+  position: absolute;
+  left: -3px;
+  bottom: -3px;
+  z-index: 1;
+  display: grid;
+  place-items: end center;
+  width: 104px;
+  height: 128px;
+  overflow: hidden;
+  border: 3px solid #ff4fd8;
+  background: #080808;
+}
+
+.boss-portrait img {
+  width: 102px;
+  height: 116px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.boss-dialog-top,
+.boss-dialog p {
+  position: relative;
+  z-index: 1;
+}
+
+.boss-dialog-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ff8be7;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.boss-dialog p {
+  margin: 22px 0 8px;
+  color: #fff;
+  font-size: clamp(1.1rem, 4vw, 1.55rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
 .tutorial-dialog::before {
   position: absolute;
   top: -10px;
@@ -1557,6 +1641,9 @@ button {
     width: calc(100vw - 28px) !important;
     padding-left: 88px;
   }
+  .boss-dialog {
+    padding-left: 88px;
+  }
   .tutorial-portrait {
     width: 82px;
     height: 118px;
@@ -1564,6 +1651,14 @@ button {
   .tutorial-portrait img {
     width: 74px;
     height: 92px;
+  }
+  .boss-portrait {
+    width: 82px;
+    height: 106px;
+  }
+  .boss-portrait img {
+    width: 78px;
+    height: 94px;
   }
   .character-grid {
     grid-template-columns: 1fr;
@@ -1601,9 +1696,9 @@ button {
   0%,
   100% {
     transform: translateX(0) rotate(-8deg);
+    width: calc(100vw - 28px) !important;
+    padding-left: 88px;
   }
-  width: calc(100vw - 28px) !important;
-  padding-left: 88px;
 
   50% {
     transform: translateX(-20px) rotate(-8deg);

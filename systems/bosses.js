@@ -324,7 +324,11 @@
 
     update(dt) {
       this.attackClock += dt;
+      const wasFury = this.fury;
       this.fury = this.getPhase() === 3;
+      if (!wasFury && this.fury) {
+        window.SWARM.ui?.showBossDialogue();
+      }
       this.move(dt);
       Object.keys(this.attackCooldowns).forEach((id) => {
         this.attackCooldowns[id] = Math.max(0, this.attackCooldowns[id] - dt);

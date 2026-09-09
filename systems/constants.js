@@ -76,12 +76,12 @@
           sprite: "assets/soldier.png",
         },
         pistol: {
-          name: "Aguia",
+          name: "Certeiro",
           cost: 12,
-          damage: 4,
+          damage: 7,
           fireDelay: 0.22,
           bulletSpeed: 760,
-          sprite: "assets/soldier2.gif",
+          sprite: "assets/soldier2.png",
         },
         rifle: {
           name: "Executor",
@@ -94,7 +94,7 @@
         archer: {
           name: "Arqueiro",
           cost: 24,
-          damage: 10,
+          damage: 20,
           fireDelay: 0.5,
           bulletSpeed: 900,
           sprite: "assets/archer.png",
@@ -167,7 +167,7 @@
   const imageSources = {
     player: "assets/soldier.png",
     archer: "assets/archer.png",
-    pistol: "assets/soldier2.gif",
+    pistol: "assets/soldier2.png",
     rifle: "assets/soldier3.png",
     knife: "assets/soldier4.png",
     bazooka: "assets/soldier5.png",

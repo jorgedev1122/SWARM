@@ -8,7 +8,7 @@
 
   function reset() {
     enemies.length = 0;
-    spawnTimer = 0; 
+    spawnTimer = 0;
   }
 
   function getDifficulty() {
@@ -30,10 +30,11 @@
     const size = config.enemy.size;
     const point = getSpawnPoint(size);
 
+    const normalModeHealthBoost = state.mode === "survival" ? 1.15 : 1;
     const health =
       options && options.health
         ? options.health
-        : Math.max(1, Math.floor(difficulty / 1.8));
+        : Math.max(1, (difficulty / 1.8) * normalModeHealthBoost);
 
     enemies.push({
       x: point.x,
@@ -112,9 +113,7 @@
     window.SWARM.game.addScore(
       Number.isFinite(source.score) ? source.score : 1,
     );
-    window.SWARM.progression.gainXP(
-      Number.isFinite(source.xp) ? source.xp : 1,
-    );
+    window.SWARM.progression.gainXP(Number.isFinite(source.xp) ? source.xp : 1);
 
     if (state.mode !== "boss_rush") {
       window.SWARM.bossSystem.maybeSpawn();
@@ -142,7 +141,9 @@
 
     while (enemy.burnTick <= 0 && enemy.burnDuration > 0) {
       enemy.burnTick += 0.2;
-      if (damage(enemy, enemy.burnDamage || 5, { color: "#ff8a1f", particles: 4 })) {
+      if (
+        damage(enemy, enemy.burnDamage || 5, { color: "#ff8a1f", particles: 4 })
+      ) {
         return;
       }
     }
@@ -173,14 +174,23 @@
         window.SWARM.ctx.save();
         window.SWARM.ctx.fillStyle = aura;
         window.SWARM.ctx.beginPath();
-        window.SWARM.ctx.arc(center.x, center.y, enemy.width * 0.72, 0, Math.PI * 2);
+        window.SWARM.ctx.arc(
+          center.x,
+          center.y,
+          enemy.width * 0.72,
+          0,
+          Math.PI * 2,
+        );
         window.SWARM.ctx.fill();
         window.SWARM.ctx.restore();
       }
 
       utils.drawRotatedImage(enemyImg, enemy, enemy.angle);
 
-      const ratio = Math.max(0, enemy.health / Math.max(1, enemy.maxHealth || enemy.health));
+      const ratio = Math.max(
+        0,
+        enemy.health / Math.max(1, enemy.maxHealth || enemy.health),
+      );
       const barY = enemy.y - 8;
       window.SWARM.ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
       window.SWARM.ctx.fillRect(enemy.x, barY, enemy.width, 4);
